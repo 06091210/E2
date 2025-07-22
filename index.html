@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -63,6 +63,78 @@
       chat.appendChild(p);
       chat.scrollTop = chat.scrollHeight;
     });
+  </script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase Chat - 履歴付き</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+    #chat p { margin: 5px 0; }
+    #name, #message { margin: 5px 0; padding: 5px; width: 200px; }
+  </style>
+</head>
+<body>
+  <h1>Firebase Chat</h1>
+
+  <div id="chat">読み込み中...</div>
+  <input type="text" id="name" placeholder="Your name">
+  <input type="text" id="message" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    // Firebase 設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyDpiiBgX5GA23sAhwZ-xo0PJcIOdPWIPPE",
+      authDomain: "enigmaeureka-c82d6.firebaseapp.com",
+      projectId: "enigmaeureka-c82d6",
+      storageBucket: "enigmaeureka-c82d6.firebasestorage.app",
+      messagingSenderId: "141254617560",
+      appId: "1:141254617560:web:d946dd4deaf59885f46aad",
+      measurementId: "G-BBFJ2DRWE8",
+      databaseURL: "https://enigmaeureka-c82d6-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const chatRef = ref(db, "messages");
+
+    const chatDiv = document.getElementById("chat");
+    chatDiv.innerHTML = ""; // 初期テキスト削除
+
+    // 時間順に読み込み＋リアルタイム追加
+    const chatQuery = query(chatRef, orderByChild("timestamp"));
+
+    onChildAdded(chatQuery, (data) => {
+      const msg = data.val();
+      const p = document.createElement("p");
+      const date = new Date(msg.timestamp);
+      const timeStr = date.toLocaleTimeString();
+      p.textContent = `[${timeStr}] ${msg.name}: ${msg.message}`;
+      chatDiv.appendChild(p);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    });
+
+    // メッセージ送信関数
+    window.sendMessage = function () {
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+      if (name && message) {
+        push(chatRef, {
+          name: name,
+          message: message,
+          timestamp: Date.now()
+        });
+        document.getElementById("message").value = "";
+      }
+    };
   </script>
 </body>
 </html>
