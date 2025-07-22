@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase Chat App</title>
+  <style>
+    #chat-box { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+    #message { width: 70%; }
+  </style>
+</head>
+<body>
+  <h2>Firebase Chat App</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="username" placeholder="名前">
+  <input type="text" id="message" placeholder="メッセージ">
+  <button onclick="sendMessage()">送信</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  
+  <script>
+    // Firebase の設定（あなたのプロジェクトの値を使って置き換えてください）
+    const firebaseConfig = {
+    apiKey: "AIzaSyDpiiBgX5GA23sAhwZ-xo0PJcIOdPWIPPE",
+    authDomain: "enigmaeureka-c82d6.firebaseapp.com",
+    projectId: "enigmaeureka-c82d6",
+    storageBucket: "enigmaeureka-c82d6.firebasestorage.app",
+    messagingSenderId: "141254617560",
+    appId: "1:141254617560:web:d946dd4deaf59885f46aad",
+    measurementId: "G-BBFJ2DRWE8"
+  };
+
+    // 初期化
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    const chatBox = document.getElementById('chat-box');
+
+    // メッセージ送信
+    function sendMessage() {
+      const username = document.getElementById('username').value;
+      const message = document.getElementById('message').value;
+
+      if (username && message) {
+        const msgRef = database.ref('messages').push();
+        msgRef.set({
+          name: username,
+          text: message,
+          time: Date.now()
+        });
+        document.getElementById('message').value = '';
+      }
+    }
+
+    // メッセージのリアルタイム取得
+    database.ref('messages').on('child_added', function(snapshot) {
+      const msg = snapshot.val();
+      const msgElem = document.createElement('div');
+      msgElem.textContent = `${msg.name}: ${msg.text}`;
+      chatBox.appendChild(msgElem);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+</html>
