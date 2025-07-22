@@ -70,32 +70,34 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Firebase Chat - 履歴付き</title>
+  <title>画像付きチャット（削除機能付き）</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
-    #chat p { margin: 5px 0; }
-    #name, #message { margin: 5px 0; padding: 5px; width: 200px; }
+    #chat { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+    img { max-height: 150px; display: block; margin-top: 5px; }
+    .msg { margin-bottom: 10px; }
+    .delete-btn { color: red; cursor: pointer; margin-left: 10px; }
   </style>
 </head>
 <body>
-  <h1>Firebase Chat</h1>
+  <h2>Firebase チャット（画像＋削除）</h2>
 
   <div id="chat">読み込み中...</div>
-  <input type="text" id="name" placeholder="Your name">
-  <input type="text" id="message" placeholder="Type your message">
+  <input type="text" id="name" placeholder="Your name"><br>
+  <input type="text" id="message" placeholder="Type a message"><br>
+  <input type="file" id="file"><br>
   <button onclick="sendMessage()">Send</button>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    import { getDatabase, ref as dbRef, push, onChildAdded, remove, child } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
     // Firebase 設定
     const firebaseConfig = {
       apiKey: "AIzaSyDpiiBgX5GA23sAhwZ-xo0PJcIOdPWIPPE",
       authDomain: "enigmaeureka-c82d6.firebaseapp.com",
       projectId: "enigmaeureka-c82d6",
-      storageBucket: "enigmaeureka-c82d6.firebasestorage.app",
+      storageBucket: "enigmaeureka-c82d6.appspot.com",
       messagingSenderId: "141254617560",
       appId: "1:141254617560:web:d946dd4deaf59885f46aad",
       measurementId: "G-BBFJ2DRWE8",
@@ -104,37 +106,92 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    const chatRef = ref(db, "messages");
-
+    const storage = getStorage(app);
+    const chatRef = dbRef(db, "messages");
     const chatDiv = document.getElementById("chat");
-    chatDiv.innerHTML = ""; // 初期テキスト削除
 
-    // 時間順に読み込み＋リアルタイム追加
-    const chatQuery = query(chatRef, orderByChild("timestamp"));
+    // メッセージ送信
+    window.sendMessage = async () => {
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const fileInput = document.getElementById("file");
+      const file = fileInput.files[0];
 
-    onChildAdded(chatQuery, (data) => {
+      let imageUrl = null;
+      let imagePath = null;
+
+      if (file) {
+        const storagePath = `chat_images/${Date.now()}_${file.name}`;
+        const imageRef = storageRef(storage, storagePath);
+        await uploadBytes(imageRef, file);
+        imageUrl = await getDownloadURL(imageRef);
+        imagePath = storagePath; // 保存して後で削除に使う
+      }
+
+      await push(chatRef, {
+        name,
+        message,
+        imageUrl,
+        imagePath,
+        timestamp: Date.now()
+      });
+
+      document.getElementById("message").value = "";
+      fileInput.value = "";
+    };
+
+    // メッセージを表示（＋削除ボタン）
+    onChildAdded(chatRef, (data) => {
+      const key = data.key;
       const msg = data.val();
-      const p = document.createElement("p");
-      const date = new Date(msg.timestamp);
-      const timeStr = date.toLocaleTimeString();
-      p.textContent = `[${timeStr}] ${msg.name}: ${msg.message}`;
-      chatDiv.appendChild(p);
+      const div = document.createElement("div");
+      div.className = "msg";
+      div.setAttribute("id", key);
+
+      const name = document.createElement("strong");
+      name.textContent = msg.name;
+
+      const text = document.createElement("span");
+      text.textContent = ": " + (msg.message || "");
+
+      const del = document.createElement("span");
+      del.textContent = "🗑";
+      del.title = "Delete";
+      del.className = "delete-btn";
+      del.onclick = () => deleteMessage(key, msg.imagePath);
+
+      div.appendChild(name);
+      div.appendChild(text);
+      div.appendChild(del);
+
+      if (msg.imageUrl) {
+        const img = document.createElement("img");
+        img.src = msg.imageUrl;
+        div.appendChild(img);
+      }
+
+      chatDiv.appendChild(div);
       chatDiv.scrollTop = chatDiv.scrollHeight;
     });
 
-    // メッセージ送信関数
-    window.sendMessage = function () {
-      const name = document.getElementById("name").value.trim();
-      const message = document.getElementById("message").value.trim();
-      if (name && message) {
-        push(chatRef, {
-          name: name,
-          message: message,
-          timestamp: Date.now()
-        });
-        document.getElementById("message").value = "";
+    // 削除処理
+    async function deleteMessage(key, imagePath) {
+      if (confirm("本当に削除しますか？")) {
+        const msgRef = child(chatRef, key);
+        await remove(msgRef);
+        if (imagePath) {
+          const imgRef = storageRef(storage, imagePath);
+          try {
+            await deleteObject(imgRef);
+            console.log("画像も削除しました:", imagePath);
+          } catch (err) {
+            console.warn("画像の削除に失敗:", err);
+          }
+        }
+        const elem = document.getElementById(key);
+        if (elem) elem.remove();
       }
-    };
+    }
   </script>
 </body>
 </html>
