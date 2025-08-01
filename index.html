@@ -1,10 +1,14 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>E2</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script>
+    function addText(text) {
+  const textarea = document.getElementById('latexInput');
+  textarea.value += text;  // 末尾に追加
+}
     window.MathJax = {
       tex: {
         displayMath: [["\\[", "\\]"], ["$$", "$$"]]
@@ -19,6 +23,7 @@
 </head>
 <body>
   <textarea id="latexInput" style="width: 100%; height: 10em; font-family: monospace;"></textarea>
+  <button onclick="addText('こんにちは')">追加</button>
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;">
   </div>
   <script>
@@ -30,66 +35,6 @@
     });
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
-  </script>
-</body>
-</html>-->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>E2</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script>
-    window.MathJax = {
-      tex: {
-        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
-      },
-      chtml: {
-        displayAlign: 'left'
-      }
-    };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body>
-  <!-- テキストエリア -->
-  <textarea id="latexInput" style="width: 100%; height: 10em; font-family: monospace;"></textarea>
-
-  <!-- 挿入ボタン -->
-  <button id="insertAbBtn">ab を末尾に追加</button>
-
-  <!-- 出力 -->
-  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
-
-  <script>
-    const input = document.getElementById("latexInput");
-    const output = document.getElementById("output");
-    const insertAbBtn = document.getElementById("insertAbBtn");
-
-    // MathJax 表示更新
-    function updateMath() {
-      output.innerHTML = input.value;
-      MathJax.typesetPromise([output]);
-    }
-
-    input.addEventListener("input", updateMath);
-    updateMath();
-
-    // テキストエリアの末尾に文字列を追加し、カーソルを末尾に移動
-    function appendToEnd(textarea, text) {
-      textarea.focus(); // 先にフォーカス
-      const currentLength = textarea.value.length;
-      textarea.setSelectionRange(currentLength, currentLength); // カーソルを末尾に
-      const before = textarea.value;
-      textarea.value = before + text;
-      textarea.setSelectionRange(textarea.value.length, textarea.value.length); // カーソル末尾に再設定
-      updateMath();
-    }
-
-    // ボタンクリックで "ab" を末尾に追加
-    insertAbBtn.addEventListener("click", () => {
-      appendToEnd(input, "ab");
-    });
   </script>
 </body>
 </html>
