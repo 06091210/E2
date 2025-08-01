@@ -69,7 +69,7 @@ f'(x)
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>MathJax Bottom Sidebar</title>
+  <title>E2</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -86,7 +86,6 @@ f'(x)
     };
   </script>
   <style>
-    /* 下部サイドバー */
     .bottom-bar {
       position: fixed;
       left: 0;
@@ -99,63 +98,46 @@ f'(x)
       border-top: 1px solid #ccc;
       z-index: 1;
     }
-
     .bottom-bar-content {
       padding: 10px;
       display: flex;
       gap: 10px;
       align-items: center;
     }
-
     .openbtn {
       position: fixed;
       bottom: 10px;
       right: 10px;
       z-index: 2;
     }
-
     textarea {
-      margin-bottom: 60px; /* サイドバーを避ける */
+      margin-bottom: 60px;
     }
   </style>
 </head>
 <body>
-
-  <!-- テキスト入力 -->
   <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
-
-  <!-- 出力 -->
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
-
-  <!-- 開閉ボタン -->
-  <button class="openbtn" onclick="toggleBottomBar()">⌄</button>
-
-  <!-- 下部サイドバー -->
+  <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
-      <button onclick="addText('\\omega')"><span>\( \omega \)</span></button>
-      <!-- 他のボタンもここに追加可能 -->
+      <h1 onclick="addText('\\omega')"><span>\( \omega \)</span></h1>
     </div>
   </div>
-
   <script>
     const input = document.getElementById("latexInput");
     const output = document.getElementById("output");
-
     input.addEventListener("input", () => {
       output.innerHTML = input.value;
       MathJax.typesetPromise([output]);
     });
-
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
-
     function addText(text) {
       input.value += text;
       output.innerHTML = input.value;
       MathJax.typesetPromise([output]);
     }
-
     function toggleBottomBar() {
       const bar = document.getElementById("bottomBar");
       if (bar.style.height === "0px" || bar.style.height === "") {
@@ -165,10 +147,7 @@ f'(x)
         bar.style.height = "0px";
       }
     }
-
-    // 初回描画
     MathJax.typesetPromise();
   </script>
-
 </body>
 </html>
