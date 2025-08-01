@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,6 @@
 </head>
 <body>
   <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
-  <!--
   テキストエリアの書き方（例）
   \[
 \begin{array}{l}
@@ -28,7 +27,6 @@ f'(x)
  \right)
 \end{array}
 \]
-  -->
   <button onclick="addText('こんにちは')">こんにちは</button>
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
   <script>
@@ -57,4 +55,62 @@ f'(x)
     };
   </script>
 </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>E2</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async 
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script>
+    // MathJaxの設定はスクリプトより前に置く
+    window.MathJax = {
+      tex: {
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        inlineMath: [["\\(", "\\)"]]
+      },
+      chtml: {
+        displayAlign: 'left'
+      }
+    };
+  </script>
+</head>
+<body>
+  <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
+
+  <!-- MathJax を含むボタン -->
+  <button id="omegaBtn" onclick="addText('\\omega')">
+    <span>\( \omega \)</span>
+  </button>
+
+  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
+
+  <script>
+    const input = document.getElementById("latexInput");
+    const output = document.getElementById("output");
+
+    input.addEventListener("input", () => {
+      output.innerHTML = input.value;
+      MathJax.typesetPromise([output]);
+    });
+
+    output.innerHTML = input.value;
+    MathJax.typesetPromise([output]);
+
+    function addText(text) {
+      const textarea = document.getElementById('latexInput');
+      const output = document.getElementById('output');
+      textarea.value += text;
+      output.innerHTML = textarea.value;
+      MathJax.typesetPromise([output]);
+    }
+
+    // ボタン内の数式も処理
+    MathJax.typesetPromise();
+  </script>
+</body>
 </html>
+
