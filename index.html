@@ -75,10 +75,14 @@
     input.addEventListener("input", updateMath);
     updateMath();
 
-    // テキストエリアの末尾に文字列を追加
+    // テキストエリアの末尾に文字列を追加し、カーソルを末尾に移動
     function appendToEnd(textarea, text) {
-      textarea.value += text;
-      textarea.focus(); // フォーカスを戻す
+      textarea.focus(); // 先にフォーカス
+      const currentLength = textarea.value.length;
+      textarea.setSelectionRange(currentLength, currentLength); // カーソルを末尾に
+      const before = textarea.value;
+      textarea.value = before + text;
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length); // カーソル末尾に再設定
       updateMath();
     }
 
