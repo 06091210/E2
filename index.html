@@ -69,7 +69,7 @@ f'(x)
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>MathJax Sidebar Button</title>
+  <title>MathJax Bottom Sidebar</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -86,46 +86,57 @@ f'(x)
     };
   </script>
   <style>
-    /* サイドバー */
-    .sidebar {
-      height: 100%;
-      width: 0;
+    /* 下部サイドバー */
+    .bottom-bar {
       position: fixed;
-      z-index: 1;
-      top: 0;
       left: 0;
-      background-color: #f9f9f9;
-      overflow-x: hidden;
+      bottom: 0;
+      width: 100%;
+      height: 0;
+      background-color: #f0f0f0;
+      overflow-y: hidden;
       transition: 0.3s;
-      padding-top: 60px;
-      border-right: 1px solid #ccc;
+      border-top: 1px solid #ccc;
+      z-index: 1;
     }
-    .sidebar button {
-      display: block;
-      margin: 10px;
+
+    .bottom-bar-content {
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
+
     .openbtn {
       position: fixed;
-      top: 10px;
-      left: 10px;
+      bottom: 10px;
+      right: 10px;
       z-index: 2;
+    }
+
+    textarea {
+      margin-bottom: 60px; /* サイドバーを避ける */
     }
   </style>
 </head>
 <body>
-  <!-- サイドバー開閉ボタン -->
-  <button class="openbtn" onclick="toggleSidebar()">☰</button>
 
-  <!-- サイドバー本体 -->
-  <div id="mySidebar" class="sidebar">
-    <button onclick="addText('\\omega')"><span>\( \omega \)</span></button>
-  </div>
+  <!-- テキスト入力 -->
+  <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
 
-  <!-- テキスト入力エリア -->
-  <textarea id="latexInput" style="width: 100%; height: 10em; margin-top: 50px;"></textarea>
-
-  <!-- 出力表示 -->
+  <!-- 出力 -->
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
+
+  <!-- 開閉ボタン -->
+  <button class="openbtn" onclick="toggleBottomBar()">⌄</button>
+
+  <!-- 下部サイドバー -->
+  <div id="bottomBar" class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button onclick="addText('\\omega')"><span>\( \omega \)</span></button>
+      <!-- 他のボタンもここに追加可能 -->
+    </div>
+  </div>
 
   <script>
     const input = document.getElementById("latexInput");
@@ -145,18 +156,19 @@ f'(x)
       MathJax.typesetPromise([output]);
     }
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById("mySidebar");
-      if (sidebar.style.width === "250px") {
-        sidebar.style.width = "0";
+    function toggleBottomBar() {
+      const bar = document.getElementById("bottomBar");
+      if (bar.style.height === "0px" || bar.style.height === "") {
+        bar.style.height = "60px";
+        MathJax.typesetPromise([bar]);
       } else {
-        sidebar.style.width = "250px";
-        MathJax.typesetPromise([sidebar]); // ← ボタンのMathJax再描画
+        bar.style.height = "0px";
       }
     }
 
-    // 初期MathJax描画（サイドバー含む）
+    // 初回描画
     MathJax.typesetPromise();
   </script>
+
 </body>
 </html>
