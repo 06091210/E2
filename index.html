@@ -18,7 +18,6 @@ f'(x)
  \right)
 \end{array}
 \]
--->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -62,6 +61,101 @@ f'(x)
       output.innerHTML = textarea.value;
       MathJax.typesetPromise([output]);
     }
+    MathJax.typesetPromise();
+  </script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>MathJax Sidebar Button</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async 
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        inlineMath: [["\\(", "\\)"]]
+      },
+      chtml: {
+        displayAlign: 'left'
+      }
+    };
+  </script>
+  <style>
+    /* サイドバー */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #f9f9f9;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      border-right: 1px solid #ccc;
+    }
+    .sidebar button {
+      display: block;
+      margin: 10px;
+    }
+    .openbtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <!-- サイドバー開閉ボタン -->
+  <button class="openbtn" onclick="toggleSidebar()">☰</button>
+
+  <!-- サイドバー本体 -->
+  <div id="mySidebar" class="sidebar">
+    <button onclick="addText('\\omega')"><span>\( \omega \)</span></button>
+  </div>
+
+  <!-- テキスト入力エリア -->
+  <textarea id="latexInput" style="width: 100%; height: 10em; margin-top: 50px;"></textarea>
+
+  <!-- 出力表示 -->
+  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
+
+  <script>
+    const input = document.getElementById("latexInput");
+    const output = document.getElementById("output");
+
+    input.addEventListener("input", () => {
+      output.innerHTML = input.value;
+      MathJax.typesetPromise([output]);
+    });
+
+    output.innerHTML = input.value;
+    MathJax.typesetPromise([output]);
+
+    function addText(text) {
+      input.value += text;
+      output.innerHTML = input.value;
+      MathJax.typesetPromise([output]);
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("mySidebar");
+      if (sidebar.style.width === "250px") {
+        sidebar.style.width = "0";
+      } else {
+        sidebar.style.width = "250px";
+        MathJax.typesetPromise([sidebar]); // ← ボタンのMathJax再描画
+      }
+    }
+
+    // 初期MathJax描画（サイドバー含む）
     MathJax.typesetPromise();
   </script>
 </body>
