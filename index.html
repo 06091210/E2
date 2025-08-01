@@ -128,7 +128,7 @@ f'(x)
       z-index: 2;
       background: none;
       border: none;
-      font-size: 8rem;
+      font-size: 4rem;
       cursor: pointer;
       color: #000000
     }
@@ -143,12 +143,12 @@ f'(x)
   <!-- 出力 -->
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
   <!-- 開閉ボタン -->
-  <button class="openbtn" onclick="toggleBottomBar()">⌄</button>
+  <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <!-- 下部サイドバー -->
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
       <!-- 単純な記号 -->
-      <button class="symbol-button" onclick="addText(String.raw'\[\omega\]')">
+      <button class="symbol-button" onclick="addText(String.raw`\[\omega\]`)">
         <span>\[\omega\]</span>
       </button>
       <!-- 複雑な複数行数式（例：極限定義） -->
