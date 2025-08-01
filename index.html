@@ -144,10 +144,10 @@ f'(x)
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
-      <button class="symbol-button" onclick="addText("\\omega")">
+      <button class="symbol-button" onclick="addText(String.raw`\omega`)">
         <span>\[\omega\]</span>
       </button>
-      <button class="symbol-button" onclick="addText(" f'(x) &= \\lim_{\\Delta x \\to 0} \\frac{f(x+\\Delta x) - f(x)}{\\Delta x} ")">
+      <button class="symbol-button" onclick="addText(String.raw`f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}`)">
         <span>\[
 \begin{aligned}
 f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
@@ -166,12 +166,12 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
     function addText(text) {
-      if (input.value.indexOf("\\[\\begin{array}{l}") === 0)
-        if (input.value.indexOf("\\end{array}\\]") !== -1)
-          input.value.replace("\\end{array}\\]", "");
-          input.value += text + "\\end{array}\\]";
-      else
+      if (input.value.indexOf("\\[\\begin{array}{l}") === 0 && input.value.indexOf("\\end{array}\\]") !== -1) {
+        input.value = input.value.replace("\\end{array}\\]", "");
+        input.value += text + "\\end{array}\\]";
+      } else {
         input.value += "\\[\\begin{array}{l}" + text + "\\end{array}\\]";
+      }
       output.innerHTML = input.value;
       MathJax.typesetPromise([output]);
     }
