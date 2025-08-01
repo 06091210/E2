@@ -56,7 +56,7 @@
   <textarea id="latexInput" style="width: 100%; height: 10em; font-family: monospace;"></textarea>
 
   <!-- 挿入ボタン -->
-  <button id="insertAbBtn">ab を挿入</button>
+  <button id="insertAbBtn">ab を末尾に追加</button>
 
   <!-- 出力 -->
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
@@ -75,23 +75,17 @@
     input.addEventListener("input", updateMath);
     updateMath();
 
-    // カーソル位置に文字列を挿入する関数
-    function insertAtCursor(textarea, text) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const before = textarea.value.substring(0, start);
-      const after = textarea.value.substring(end);
-      textarea.value = before + text + after;
-      textarea.selectionStart = textarea.selectionEnd = start + text.length;
-      textarea.focus();
+    // テキストエリアの末尾に文字列を追加
+    function appendToEnd(textarea, text) {
+      textarea.value += text;
+      textarea.focus(); // フォーカスを戻す
       updateMath();
     }
 
-    // ボタンクリックで "ab" を挿入
+    // ボタンクリックで "ab" を末尾に追加
     insertAbBtn.addEventListener("click", () => {
-      insertAtCursor(input, "ab");
+      appendToEnd(input, "ab");
     });
   </script>
 </body>
 </html>
-
