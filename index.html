@@ -69,7 +69,8 @@ f'(x)
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>複数行ボタン対応</title>
+  <title>E2</title>
+  <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -138,21 +139,15 @@ f'(x)
   </style>
 </head>
 <body>
-  <!-- テキスト入力 -->
   <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
-  <!-- 出力 -->
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
-  <!-- 開閉ボタン -->
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
-  <!-- 下部サイドバー -->
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
-      <!-- 単純な記号 -->
-      <button class="symbol-button" onclick="addText(String.raw`\[\omega\]`)">
+      <button class="symbol-button" onclick="addText(String.raw`\omega\]`)">
         <span>\[\omega\]</span>
       </button>
-      <!-- 複雑な複数行数式（例：極限定義） -->
-      <button class="symbol-button" onclick="addText(String.raw`\[
+      <button class="symbol-button" onclick="addText(String.raw`
 \begin{aligned}
 f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \end{aligned}
@@ -163,7 +158,6 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \end{aligned}
 \]</span>
       </button>
-      <!-- 他にも追加可能 -->
     </div>
   </div>
   <script>
@@ -176,7 +170,10 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
     function addText(text) {
-      input.value += text;
+      if ( sample.indexOf("\[") === 0 )
+        input.value += text;
+      else
+        input.value += "\[" + text
       output.innerHTML = input.value;
       MathJax.typesetPromise([output]);
     }
