@@ -167,13 +167,16 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
     function addText(text) {
-      if (input.value.indexOf("\\[\\begin{array}{l}") === 0 && input.value.indexOf("\\end{array}\\]") !== -1) {
+      input.value += text//付け加え
+      /*if (input.value.indexOf("\\[\\begin{array}{l}") === 0 && input.value.indexOf("\\end{array}\\]") !== -1) {
         input.value = input.value.replace("\\end{array}\\]", "");
         input.value += text + "\\end{array}\\]";
       } else {
         input.value += "\\[\\begin{array}{l}" + text + "\\end{array}\\]";
       }
       output.innerHTML = input.value;
+      */
+      output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
       MathJax.typesetPromise([output]);
     }
     function toggleBottomBar() {
