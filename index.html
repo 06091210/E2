@@ -157,8 +157,8 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     </div>
   </div>
   <script>
-    const input = "\\[\\begin{array}{l}"+document.getElementById("latexInput")+"\\end{array}\\]";//書き換え　正しくは161のコード
-    //const input = document.getElementById("latexInput");
+    const input = document.getElementById("latexInput");
+    input.value = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
     const output = document.getElementById("output");
     input.addEventListener("input", () => {
       output.innerHTML = input.value;
