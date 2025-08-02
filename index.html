@@ -159,9 +159,10 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
   <script>
     const input = document.getElementById("latexInput");
     const output = document.getElementById("output");
-    output.value = "\\[\\begin{array}{l}"+output.value+"\\end{array}\\]";//付け加え
+    //output.value = "\\[\\begin{array}{l}"+output.value+"\\end{array}\\]";//付け加え
     input.addEventListener("input", () => {
-      output.innerHTML = input.value;
+      //output.innerHTML = input.value;
+      output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
       MathJax.typesetPromise([output]);
     });
     output.innerHTML = input.value;
@@ -173,9 +174,8 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
         input.value += text + "\\end{array}\\]";
       } else {
         input.value += "\\[\\begin{array}{l}" + text + "\\end{array}\\]";
-      }
-      output.innerHTML = input.value;
-      */
+      }*/
+      //output.innerHTML = input.value;
       output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
       MathJax.typesetPromise([output]);
     }
