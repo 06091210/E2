@@ -157,7 +157,8 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     </div>
   </div>
   <script>
-    const input = document.getElementById("latexInput");
+    const input = "\\[\\begin{array}{l}"+document.getElementById("latexInput")+"\\end{array}\\]";//書き換え　正しくは161のコード
+    //const input = document.getElementById("latexInput");
     const output = document.getElementById("output");
     input.addEventListener("input", () => {
       output.innerHTML = input.value;
@@ -165,7 +166,7 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     });
     output.innerHTML = input.value;
     MathJax.typesetPromise([output]);
-    /*function addText(text) {
+    function addText(text) {
       if (input.value.indexOf("\\[\\begin{array}{l}") === 0 && input.value.indexOf("\\end{array}\\]") !== -1) {
         input.value = input.value.replace("\\end{array}\\]", "");
         input.value += text + "\\end{array}\\]";
@@ -173,18 +174,6 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
         input.value += "\\[\\begin{array}{l}" + text + "\\end{array}\\]";
       }
       output.innerHTML = input.value;
-      MathJax.typesetPromise([output]);
-    }*/
-    function addText(text) {
-      input.value += text
-      /*if (output.value.indexOf("\\[\\begin{array}{l}") === 0 && output.value.indexOf("\\end{array}\\]") !== -1) {
-        output.value = output.value.replace("\\end{array}\\]", "");
-        output.innerHTML = input.value + "\\end{array}\\]";
-      } else {
-        output.value = "\\[\\begin{array}{l}" + input.value + "\\end{array}\\]";
-      }*/
-      output.innerHTML = output.innerHTML.replace("\\end{array}\\]", "");
-      output.innerHTML = "\\[\\begin{array}{l}" + input.value + "\\end{array}\\]";
       MathJax.typesetPromise([output]);
     }
     function toggleBottomBar() {
@@ -197,7 +186,6 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
       }
     }
     MathJax.typesetPromise();
-    addText(input.value);
   </script>
 </body>
 </html>
