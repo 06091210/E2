@@ -144,7 +144,7 @@ f'(x)
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
-    <!--<div class="bottom-bar-content">
+    <div class="bottom-bar-content">
       <button class="symbol-button" onclick="addText(String.raw`\omega`)">
         <span>\[\omega\]</span>
       </button>
@@ -155,10 +155,9 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \end{aligned}
 \]</span>
       </button>
-    </div>-->
-    <div id="symbol-buttons" class="bottom-bar-content"></div><!--追加-->
+    </div>
   </div>
-  <!--<script>
+  <script>
     const input = document.getElementById("latexInput");
     const output = document.getElementById("output");
     //output.value = "\\[\\begin{array}{l}"+output.value+"\\end{array}\\]";//付け加え
@@ -191,86 +190,6 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
       }
     }
     MathJax.typesetPromise();
-    //追加
-  const symbols = [
-    { cmd: "\\omega", label: "\\omega" },
-    { cmd: "\\alpha", label: "\\alpha" },
-    { cmd: "\\beta", label: "\\beta" },
-    { cmd: "\\gamma", label: "\\gamma" },
-    { cmd: "\\pi", label: "\\pi" },
-    { cmd: "\\sqrt{x}", label: "\\sqrt{x}" },
-    { cmd: "\\frac{a}{b}", label: "\\frac{a}{b}" },
-    { cmd: "\\int", label: "\\int" },
-    { cmd: "\\sum", label: "\\sum" },
-    { cmd: "f'(x) = \\lim_{\\Delta x \\to 0} \\frac{f(x+\\Delta x) - f(x)}{\\Delta x}", label: "f'(x)=..." }
-    // ←必要に応じてどんどん追加
-  ];
-
-  const container = document.getElementById("symbol-buttons");
-
-  symbols.forEach(({ cmd, label }) => {
-    const btn = document.createElement("button");
-    btn.className = "symbol-button";
-    btn.innerHTML = `\\[${label}\\]`;
-    btn.onclick = () => addText(String.raw`${cmd}`);
-    container.appendChild(btn);
-  });
-
-  MathJax.typesetPromise([container]);
-//追加
-  </script>-->
-  <script>
-  const input = document.getElementById("latexInput");
-  const output = document.getElementById("output");
-
-  function addText(text) {
-    input.value += text;
-    output.innerHTML = "\\[\\begin{array}{l}" + input.value + "\\end{array}\\]";
-    MathJax.typesetPromise([output]);
-  }
-
-  function toggleBottomBar() {
-    const bar = document.getElementById("bottomBar");
-    if (bar.style.height === "0px" || bar.style.height === "") {
-      bar.style.height = "240px"; // ← 高さ増やしたほうが見やすいです
-      MathJax.typesetPromise([bar]);
-    } else {
-      bar.style.height = "0px";
-    }
-  }
-
-  // MathJax の読み込みが完了してから実行
-  MathJax.startup.promise.then(() => {
-    const symbols = [
-      { cmd: "\\omega", label: "\\omega" },
-      { cmd: "\\alpha", label: "\\alpha" },
-      { cmd: "\\beta", label: "\\beta" },
-      { cmd: "\\gamma", label: "\\gamma" },
-      { cmd: "\\pi", label: "\\pi" },
-      { cmd: "\\sqrt{x}", label: "\\sqrt{x}" },
-      { cmd: "\\frac{a}{b}", label: "\\frac{a}{b}" },
-      { cmd: "\\int", label: "\\int" },
-      { cmd: "\\sum", label: "\\sum" },
-      { cmd: "f'(x) = \\lim_{\\Delta x \\to 0} \\frac{f(x+\\Delta x) - f(x)}{\\Delta x}", label: "f'(x)=..." }
-    ];
-
-    const container = document.getElementById("symbol-buttons");
-
-    symbols.forEach(({ cmd, label }) => {
-      const btn = document.createElement("button");
-      btn.className = "symbol-button";
-      btn.innerHTML = `\\[${label}\\]`;
-      btn.onclick = () => addText(String.raw`${cmd}`);
-      container.appendChild(btn);
-    });
-
-    MathJax.typesetPromise([container]);
-
-    // 初回のoutput表示もここで初期化
-    output.innerHTML = "\\[\\begin{array}{l}" + input.value + "\\end{array}\\]";
-    MathJax.typesetPromise([output]);
-  });
-</script>
-
+  </script>
 </body>
 </html>
