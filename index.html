@@ -144,7 +144,7 @@ f'(x)
   <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
-    <div class="bottom-bar-content">
+    <!--<div class="bottom-bar-content">
       <button class="symbol-button" onclick="addText(String.raw`\omega`)">
         <span>\[\omega\]</span>
       </button>
@@ -155,7 +155,8 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \end{aligned}
 \]</span>
       </button>
-    </div>
+    </div>-->
+    <div id="symbol-buttons" class="bottom-bar-content"></div><!--追加-->
   </div>
   <script>
     const input = document.getElementById("latexInput");
