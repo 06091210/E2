@@ -156,7 +156,7 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \]</span>
       </button>
     </div>-->
-    <div id="symbol-button" class="bottom-bar-content"></div><!--追加-->
+    <div id="symbol-buttons" class="bottom-bar-content"></div><!--追加-->
   </div>
   <script>
     const input = document.getElementById("latexInput");
@@ -192,27 +192,31 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     }
     MathJax.typesetPromise();
     //追加
-    const symbols = [
-  { cmd: "\\alpha", label: "\\alpha" },
-  { cmd: "\\beta", label: "\\beta" },
-  { cmd: "\\sqrt{x}", label: "\\sqrt{x}" },
-  { cmd: "\\frac{a}{b}", label: "\\frac{a}{b}" },
-  { cmd: "\\int", label: "\\int" },
-  { cmd: "\\sum", label: "\\sum" },
-  // 追加していけばOK！
-];
+  const symbols = [
+    { cmd: "\\omega", label: "\\omega" },
+    { cmd: "\\alpha", label: "\\alpha" },
+    { cmd: "\\beta", label: "\\beta" },
+    { cmd: "\\gamma", label: "\\gamma" },
+    { cmd: "\\pi", label: "\\pi" },
+    { cmd: "\\sqrt{x}", label: "\\sqrt{x}" },
+    { cmd: "\\frac{a}{b}", label: "\\frac{a}{b}" },
+    { cmd: "\\int", label: "\\int" },
+    { cmd: "\\sum", label: "\\sum" },
+    { cmd: "f'(x) = \\lim_{\\Delta x \\to 0} \\frac{f(x+\\Delta x) - f(x)}{\\Delta x}", label: "f'(x)=..." }
+    // ←必要に応じてどんどん追加
+  ];
 
-const container = document.getElementById("symbol-buttons");
+  const container = document.getElementById("symbol-buttons");
 
-symbols.forEach(({ cmd, label }) => {
-  const btn = document.createElement("button");
-  btn.className = "symbol-button";
-  btn.innerHTML = `\\[${label}\\]`;
-  btn.onclick = () => addText(String.raw`${cmd}`);
-  container.appendChild(btn);
-});
+  symbols.forEach(({ cmd, label }) => {
+    const btn = document.createElement("button");
+    btn.className = "symbol-button";
+    btn.innerHTML = `\\[${label}\\]`;
+    btn.onclick = () => addText(String.raw`${cmd}`);
+    container.appendChild(btn);
+  });
 
-MathJax.typesetPromise([container]);
+  MathJax.typesetPromise([container]);
 //追加
   </script>
 </body>
