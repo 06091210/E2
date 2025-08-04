@@ -157,7 +157,7 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
       </button>
     </div>
   </div>
-  <script>
+  <!--<script>
     const input = document.getElementById("latexInput");
     const output = document.getElementById("output");
     //output.value = "\\[\\begin{array}{l}"+output.value+"\\end{array}\\]";//付け加え
@@ -190,6 +190,62 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
       }
     }
     MathJax.typesetPromise();
-  </script>
+  </script>-->
+  <script>
+  const input = document.getElementById("latexInput");
+  const output = document.getElementById("output");
+
+  input.addEventListener("input", () => {
+    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
+    MathJax.typesetPromise([output]);
+  });
+
+  output.innerHTML = input.value;
+  MathJax.typesetPromise([output]);
+
+  function addText(text) {
+    input.value += text;
+    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
+    MathJax.typesetPromise([output]);
+  }
+
+  function toggleBottomBar() {
+    const bar = document.getElementById("bottomBar");
+    if (bar.style.height === "0px" || bar.style.height === "") {
+      bar.style.height = "120px";
+      MathJax.typesetPromise([bar]);
+    } else {
+      bar.style.height = "0px";
+    }
+  }
+
+  // ✅ ここから新しく追加！
+  const commandList = [
+    { code: String.raw`\frac{a}{b}`, preview: String.raw`\frac{a}{b}` },
+    { code: String.raw`\sqrt{a}`, preview: String.raw`\sqrt{a}` },
+    { code: String.raw`\sum_{i=1}^n i`, preview: String.raw`\sum_{i=1}^n i` },
+    { code: String.raw`\int_a^b f(x)\,dx`, preview: String.raw`\int_a^b f(x)\,dx` },
+    // 必要な分だけ追加（この配列はスクロールで大きくなります）
+  ];
+
+  function buildButtons() {
+    const container = document.querySelector(".bottom-bar-content");
+    commandList.forEach(cmd => {
+      const btn = document.createElement("button");
+      btn.className = "symbol-button";
+      btn.type = "button";
+      btn.addEventListener("click", () => addText(cmd.code));
+      const span = document.createElement("span");
+      span.innerHTML = `\\[${cmd.preview}\\]`;
+      btn.appendChild(span);
+      container.appendChild(btn);
+    });
+    MathJax.typesetPromise([container]);
+  }
+
+  document.addEventListener("DOMContentLoaded", buildButtons);
+
+  // ✅ ここまで新規追加
+</script>
 </body>
 </html>
