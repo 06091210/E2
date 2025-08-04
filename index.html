@@ -36,7 +36,7 @@ f'(x)
       }
     };
   </script>
-  <style>
+  <!--<style>
     .bottom-bar {
       position: fixed;
       left: 0;
@@ -48,6 +48,8 @@ f'(x)
       transition: 0.3s;
       border-top: 1px solid #ccc;
       z-index: 1;
+      max-height: 40vh;
+      overflow-y: auto;
     }
     .bottom-bar-content {
       padding: 10px;
@@ -87,7 +89,104 @@ f'(x)
     textarea {
       margin-bottom: 100px;
     }
-  </style>
+  </style>-->
+  <style>
+  .bottom-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    max-height: 50vh; /* 高さ上限を設定 */
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    transition: 0.3s;
+    border-top: 1px solid #ccc;
+    z-index: 1;
+  }
+
+  .bottom-bar-content {
+    padding: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-y: auto;
+  }
+
+  .symbol-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 0.4em 0.6em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 0.5em;
+    transition: background 0.2s;
+  }
+
+  .symbol-button:hover {
+    background: #e0e0e0;
+  }
+
+  .symbol-button span {
+    display: block;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .openbtn {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+    z-index: 2;
+    background: none;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    color: #000000;
+  }
+
+  textarea {
+    margin-bottom: 100px;
+    font-size: 1.1rem;
+  }
+
+  /* ✅ スマホ縦画面対応（600px以下） */
+  @media (max-width: 600px) {
+    .bottom-bar-content {
+      justify-content: flex-start;
+      padding: 10px;
+      gap: 8px;
+    }
+    .symbol-button {
+      font-size: 1rem;
+      min-width: 42px;
+      min-height: 42px;
+    }
+    .openbtn {
+      font-size: 2.5rem;
+      right: 10px;
+    }
+    textarea {
+      font-size: 1rem;
+    }
+  }
+
+  /* ✅ 横画面など広い画面対応 */
+  @media (min-width: 601px) {
+    .bottom-bar-content {
+      justify-content: center;
+    }
+  }
+</style>
+
 </head>
 <body>
   <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
