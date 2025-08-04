@@ -145,7 +145,7 @@ f'(x)
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
-      <button class="symbol-button" onclick="addText(String.raw`\omega`)">
+      <!--<button class="symbol-button" onclick="addText(String.raw`\omega`)">
         <span>\[\omega\]</span>
       </button>
       <button class="symbol-button" onclick="addText(String.raw`f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}`)">
@@ -154,7 +154,7 @@ f'(x)
 f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
 \end{aligned}
 \]</span>
-      </button>
+      </button>-->
     </div>
   </div>
   <!--<script>
@@ -200,9 +200,6 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
     MathJax.typesetPromise([output]);
   });
 
-  output.innerHTML = input.value;
-  MathJax.typesetPromise([output]);
-
   function addText(text) {
     input.value += text;
     output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
@@ -212,40 +209,46 @@ f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
   function toggleBottomBar() {
     const bar = document.getElementById("bottomBar");
     if (bar.style.height === "0px" || bar.style.height === "") {
-      bar.style.height = "120px";
+      bar.style.height = "160px"; // ← 高さを増やしてみた
       MathJax.typesetPromise([bar]);
     } else {
       bar.style.height = "0px";
     }
   }
 
-  // ✅ ここから新しく追加！
+  // ✅ 追加するコマンド一覧（まずはテスト用に3つ）
   const commandList = [
-    { code: String.raw`\frac{a}{b}`, preview: String.raw`\frac{a}{b}` },
-    { code: String.raw`\sqrt{a}`, preview: String.raw`\sqrt{a}` },
-    { code: String.raw`\sum_{i=1}^n i`, preview: String.raw`\sum_{i=1}^n i` },
-    { code: String.raw`\int_a^b f(x)\,dx`, preview: String.raw`\int_a^b f(x)\,dx` },
-    // 必要な分だけ追加（この配列はスクロールで大きくなります）
+    { code: String.raw`\omega`, preview: String.raw`\omega` },
+    { code: String.raw`\frac{1}{2}`, preview: String.raw`\frac{1}{2}` },
+    { code: String.raw`\sum_{i=1}^n a_i`, preview: String.raw`\sum_{i=1}^n a_i` }
   ];
 
   function buildButtons() {
     const container = document.querySelector(".bottom-bar-content");
+    if (!container) {
+      console.error("⚠ .bottom-bar-content が見つかりません");
+      return;
+    }
+
     commandList.forEach(cmd => {
       const btn = document.createElement("button");
       btn.className = "symbol-button";
       btn.type = "button";
       btn.addEventListener("click", () => addText(cmd.code));
+
       const span = document.createElement("span");
       span.innerHTML = `\\[${cmd.preview}\\]`;
+
       btn.appendChild(span);
       container.appendChild(btn);
     });
+
     MathJax.typesetPromise([container]);
   }
 
+  // ✅ DOM構築後にビルド
   document.addEventListener("DOMContentLoaded", buildButtons);
-
-  // ✅ ここまで新規追加
 </script>
+
 </body>
 </html>
