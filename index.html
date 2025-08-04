@@ -118,7 +118,7 @@ f'(x)
   .symbol-button {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    /*font-size: 1.2rem;*/
     padding: 0.4em 0.6em;
     cursor: pointer;
     display: flex;
@@ -148,42 +148,43 @@ f'(x)
     z-index: 2;
     background: none;
     border: none;
-    font-size: 3rem;
+    /*font-size: 3rem;*/
     cursor: pointer;
     color: #000000;
   }
 
   textarea {
     margin-bottom: 100px;
+    /*font-size: 1.1rem;*/
+  }
+    /* ✅ 縦画面（スマホ縦持ちなど） */
+@media (orientation: portrait) {
+  body {
+    font-size: 1rem;
+  }
+  .symbol-button {
     font-size: 1.1rem;
   }
-
-  /* ✅ スマホ縦画面対応（600px以下） */
- @media (max-width: 600px) {
-  .bottom-bar {
-    max-height: 60vh; /* ← 画面の60%までバーを広く */
-  }
-
-  .bottom-bar-content {
-    justify-content: flex-start;
-    padding: 10px;
-    gap: 8px;
-  }
-
-  .symbol-button {
-    font-size: 1rem;
-    min-width: 42px;
-    min-height: 42px;
-  }
-
-  .openbtn {
-    font-size: 5vw; /* ← 画面幅の5%（かなり大きめ） */
-    right: 10px;
-    bottom: 8px;
-  }
-
   textarea {
     font-size: 1rem;
+  }
+  .openbtn {
+    font-size: 6vw; /* ⌄ボタンも大きめに */
+  }
+}
+/* ✅ 横画面（PCやタブレット横持ち） */
+@media (orientation: landscape) {
+  body {
+    font-size: 1.2rem;
+  }
+  .symbol-button {
+    font-size: 1.3rem;
+  }
+  textarea {
+    font-size: 1.2rem;
+  }
+  .openbtn {
+    font-size: 4vw; /* ⌄ボタンは少し小さめに */
   }
 }
 </style>
