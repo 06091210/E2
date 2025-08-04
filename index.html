@@ -119,9 +119,18 @@ f'(x)
     }
   }
   const commandList = [
-    { code: String.raw`\omega`, preview: String.raw`\omega` },
     { code: String.raw`\frac{1}{2}`, preview: String.raw`\frac{1}{2}` },
-    { code: String.raw`\sum_{i=1}^n a_i`, preview: String.raw`\sum_{i=1}^n a_i` }
+    { code: String.raw`\dfrac{1}{2}` , preview: String.raw`\dfrac{1}{2}` },
+    { code: String.raw`\require{physics} \flatfrac{1}{2}` , preview: String.raw`\require{physics} \flatfrac{1}{2}` },
+    { code: String.raw`\left( -\frac{1}{2} \right)^2` , preview: String.raw`\left( -\frac{1}{2} \right)^2` },
+    { code: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` , preview: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` },
+    { code: String.raw`\ddots` , preview: String.raw`\ddots` },
+    { code: String.raw`0.\dot{0}\dot{9}` , preview: String.raw`0.\dot{0}\dot{9}` },
+    { code: String.raw`\pi` , preview: String.raw`\pi` },
+    { code: String.raw`\ldots` , preview: String.raw`\ldots` },
+    { code: String.raw`\sqrt{2}` , preview: String.raw`\sqrt{2}` },
+    { code: String.raw`\cdots` , preview: String.raw`\cdots` },
+    { code: String.raw`\infty` , preview: String.raw`\infty` },
   ];
   function buildButtons() {
     const container = document.querySelector(".bottom-bar-content");
