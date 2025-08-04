@@ -1,7 +1,5 @@
 <!--
   テキストエリアの書き方（例）
-  \[
-\begin{array}{l}
 f'(x)
  = \frac{ df }{ dx }
  = \displaystyle \lim_{ \Delta x \to 0 } \frac{ f(x + \Delta x) - f(x) }{ \Delta x }
@@ -16,55 +14,7 @@ f'(x)
      1
    \end{array}
  \right)
-\end{array}
-\]
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>E2</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async 
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <script>
-    window.MathJax = {
-      tex: {
-        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
-        inlineMath: [["\\(", "\\)"]]
-      },
-      chtml: {
-        displayAlign: 'left'
-      }
-    };
-  </script>
-</head>
-<body>
-  <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
-  <button id="omegaBtn" onclick="addText('\\omega')">
-    <span>\( \omega \)</span>
-  </button>
-  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
-  <script>
-    const input = document.getElementById("latexInput");
-    const output = document.getElementById("output");
-    input.addEventListener("input", () => {
-      output.innerHTML = input.value;
-      MathJax.typesetPromise([output]);
-    });
-    output.innerHTML = input.value;
-    MathJax.typesetPromise([output]);
-    function addText(text) {
-      const textarea = document.getElementById('latexInput');
-      const output = document.getElementById('output');
-      textarea.value += text;
-      output.innerHTML = textarea.value;
-      MathJax.typesetPromise([output]);
-    }
-    MathJax.typesetPromise();
-  </script>
-</body>
-</html>-->
+-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -145,108 +95,52 @@ f'(x)
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
-      <!--<button class="symbol-button" onclick="addText(String.raw`\omega`)">
-        <span>\[\omega\]</span>
-      </button>
-      <button class="symbol-button" onclick="addText(String.raw`f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}`)">
-        <span>\[
-\begin{aligned}
-f'(x) &= \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x}
-\end{aligned}
-\]</span>
-      </button>-->
     </div>
   </div>
-  <!--<script>
-    const input = document.getElementById("latexInput");
-    const output = document.getElementById("output");
-    //output.value = "\\[\\begin{array}{l}"+output.value+"\\end{array}\\]";//付け加え
-    input.addEventListener("input", () => {
-      //output.innerHTML = input.value;
-      output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
-      MathJax.typesetPromise([output]);
-    });
-    output.innerHTML = input.value;
-    MathJax.typesetPromise([output]);
-    function addText(text) {
-      input.value += text//付け加え
-      /*if (input.value.indexOf("\\[\\begin{array}{l}") === 0 && input.value.indexOf("\\end{array}\\]") !== -1) {
-        input.value = input.value.replace("\\end{array}\\]", "");
-        input.value += text + "\\end{array}\\]";
-      } else {
-        input.value += "\\[\\begin{array}{l}" + text + "\\end{array}\\]";
-      }*/
-      //output.innerHTML = input.value;
-      output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";//付け加え
-      MathJax.typesetPromise([output]);
-    }
-    function toggleBottomBar() {
-      const bar = document.getElementById("bottomBar");
-      if (bar.style.height === "0px" || bar.style.height === "") {
-        bar.style.height = "120px";
-        MathJax.typesetPromise([bar]);
-      } else {
-        bar.style.height = "0px";
-      }
-    }
-    MathJax.typesetPromise();
-  </script>-->
   <script>
   const input = document.getElementById("latexInput");
   const output = document.getElementById("output");
-
   input.addEventListener("input", () => {
     output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
     MathJax.typesetPromise([output]);
   });
-
   function addText(text) {
     input.value += text;
     output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
     MathJax.typesetPromise([output]);
   }
-
   function toggleBottomBar() {
     const bar = document.getElementById("bottomBar");
     if (bar.style.height === "0px" || bar.style.height === "") {
-      bar.style.height = "160px"; // ← 高さを増やしてみた
+      bar.style.height = "160px";
       MathJax.typesetPromise([bar]);
     } else {
       bar.style.height = "0px";
     }
   }
-
-  // ✅ 追加するコマンド一覧（まずはテスト用に3つ）
   const commandList = [
     { code: String.raw`\omega`, preview: String.raw`\omega` },
     { code: String.raw`\frac{1}{2}`, preview: String.raw`\frac{1}{2}` },
     { code: String.raw`\sum_{i=1}^n a_i`, preview: String.raw`\sum_{i=1}^n a_i` }
   ];
-
   function buildButtons() {
     const container = document.querySelector(".bottom-bar-content");
     if (!container) {
       console.error("⚠ .bottom-bar-content が見つかりません");
       return;
     }
-
     commandList.forEach(cmd => {
       const btn = document.createElement("button");
       btn.className = "symbol-button";
       btn.type = "button";
       btn.addEventListener("click", () => addText(cmd.code));
-
       const span = document.createElement("span");
       span.innerHTML = `\\[${cmd.preview}\\]`;
-
       btn.appendChild(span);
       container.appendChild(btn);
     });
-
     MathJax.typesetPromise([container]);
   }
-
-  // ✅ DOM構築後にビルド
   document.addEventListener("DOMContentLoaded", buildButtons);
 </script>
 
