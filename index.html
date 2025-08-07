@@ -92,6 +92,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-size: clamp(14px, 2.5vw, 22px);
   }
 
   /*.container {
@@ -102,7 +103,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }*/
+  }*/    
     .container {
   width: 100%;
   max-width: none; /* あとでJSで制御する */
@@ -305,7 +306,7 @@
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
-
+/*
 function resizeContainer() {
   const container = document.querySelector(".container");
   const w = window.innerWidth;
@@ -319,8 +320,15 @@ function resizeContainer() {
 
 // 初回実行＋画面リサイズ時にも対応
 window.addEventListener("load", resizeContainer);
-window.addEventListener("resize", resizeContainer);
-    
+window.addEventListener("resize", resizeContainer);*/
+function adjustFontSize() {
+  const shortSide = Math.min(window.innerWidth, window.innerHeight);
+  const fontSize = shortSide * 0.03; // 画面短辺の3%
+  document.querySelector(".container").style.fontSize = fontSize + "px";
+}
+
+window.addEventListener("load", adjustFontSize);
+window.addEventListener("resize", adjustFontSize);
   </script>
 </body>
 </html>
