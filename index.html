@@ -99,7 +99,7 @@
   <div id="step2" class="step">
     <h2>② メッセージを上書き</h2>
     <form id="myForm">
-      <input type="text" name="name" id="nameInput" placeholder="名前"><br>
+      <input type="text" name="name" id="nameInput" placeholder="名前（あなたの名前）"><br>
       <textarea name="message" placeholder="メッセージ"></textarea><br>
       <button type="submit">上書き</button>
     </form>
@@ -128,7 +128,6 @@
         alert("作者名を入力してください。");
         return;
       }
-      document.getElementById("nameInput").value = author; // 名前欄にも反映
       showStep("step2");
     }
 
@@ -190,4 +189,3 @@
 
 </body>
 </html>
-
