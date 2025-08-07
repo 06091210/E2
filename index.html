@@ -200,7 +200,7 @@ f'(x)
   </div>
   <!--以下はSpreadSheet連携のプログラム-->
   <form id="myForm">
-    <input type="hidden" name="name" id="nameInput" placeholder="名前"><br>
+    <input type="text" name="name" id="nameInput" placeholder="名前"><br>
     <textarea name="message" placeholder="メッセージ"></textarea><br>
     <button type="submit">上書き</button>
   </form>
@@ -273,14 +273,14 @@ f'(x)
         alert("上書きしました！");
       });
     });
-    parent.postMessage({ type: "requestValue" }, "*");
+    /*parent.postMessage({ type: "requestValue" }, "*");
     window.addEventListener("message", (event) => {
       if (event.data.type === "setValue") {
         const name = event.data.value;
         nameInput.value = name;
         loadMessage();
       }
-    });
+    });*/
     function loadMessage() {
       const inputUsername = nameInput.value.trim();
       const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be";
