@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>問題と正解判定（Apps Script）</title>
+  <link rel="apple-touch-icon" href="Icon.jpeg">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <h2>問題出題＆正解判定</h2>
@@ -33,7 +36,8 @@
         .then(res => res.json())
         .then(data => {
           if (data.question) {
-            document.getElementById("questionBox").textContent = data.question;
+            document.getElementById("questionBox").innerHTML = data.question;
+            MathJax.typeset();
             correctAnswer = data.answer.trim();
             document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           } else {
