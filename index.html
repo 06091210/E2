@@ -250,7 +250,7 @@
   .then(response => response.text())
   .then(result => {
     alert("送信が完了しました！");
-    showStep(3); // Step3 に進む
+    showStep("step3"); // Step3 に進む
     loadQuestion(); // 問題読み込み
   })
   .catch(error => {
