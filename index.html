@@ -2,64 +2,59 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>問題と解答判定</title>
+  <title>問題と正解判定（Apps Script）</title>
 </head>
 <body>
-  <h2>問題検索＆正解判定</h2>
+  <h2>問題出題＆正解判定</h2>
 
-  <!-- 作者名入力 -->
-  <label for="authorInput">作者名:</label><br>
-  <input type="text" id="authorInput" placeholder="例: 山田太郎"><br><br>
+  <label>作者名:</label><br>
+  <input type="text" id="authorInput" placeholder="例：山田太郎"><br><br>
 
-  <!-- 問題表示 -->
-  <label for="questionBox">問題:</label><br>
+  <button onclick="loadQuestion()">問題を取得</button><br><br>
+
+  <label>問題:</label><br>
   <textarea id="questionBox" rows="3" cols="40" readonly></textarea><br><br>
 
-  <!-- 回答入力 -->
-  <label for="answerInput">あなたの回答:</label><br>
+  <label>あなたの回答:</label><br>
   <input type="text" id="answerInput"><br><br>
 
-  <!-- ボタン -->
-  <button onclick="loadQuestion()">問題を取得</button>
-  <button onclick="checkAnswer()">回答を判定</button><br><br>
+  <button onclick="checkAnswer()">判定</button><br><br>
 
-  <!-- 結果表示 -->
-  <div id="resultMessage" style="font-weight: bold;"></div>
+  <div id="resultMessage" style="font-weight:bold;"></div>
 
   <script>
-    let correctAnswer = "";  // 正解を保存しておく変数
+    let correctAnswer = "";
 
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be"; // シートBest APIのURL
+      const apiUrl = "https://script.google.com/macros/s/AKfycbxNvC1x1sKdPxQDnlH61jGhA4iI5rX9h082Q92vfLpCyE-Om9y0EZXlkrP2f6nYzhbF/exec?author=" + encodeURIComponent(author);
 
-      fetch(API_URL)
-        .then(response => response.json())
+      fetch(apiUrl)
+        .then(res => res.json())
         .then(data => {
-          const match = data.find(row => row["作者名"] === author);
-          if (match) {
-            document.getElementById("questionBox").value = match["問題"] || "問題が見つかりません。";
-            correctAnswer = (match["解答"] || "").trim();
+          if (data.question) {
+            document.getElementById("questionBox").value = data.question;
+            correctAnswer = data.answer.trim();
             document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           } else {
             document.getElementById("questionBox").value = "";
             correctAnswer = "";
-            document.getElementById("resultMessage").textContent = "一致する作者が見つかりません。";
+            document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
           }
         })
-        .catch(error => {
-          document.getElementById("resultMessage").textContent = "読み込みエラー: " + error;
+        .catch(err => {
+          document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
     }
 
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
-      if (correctAnswer === "") {
+      if (!correctAnswer) {
         document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
       } else if (userAnswer === correctAnswer) {
-        document.getElementById("resultMessage").textContent = "✅ 正解です！";
+        document.getElementById("resultMessage").textContent = "✅ 正解！";
       } else {
-        document.getElementById("resultMessage").textContent = "❌ 不正解です。正解は「" + correctAnswer + "」です。";
+        document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
       }
     }
   </script>
