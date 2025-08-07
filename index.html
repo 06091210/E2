@@ -82,7 +82,7 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <style>
+  <!--<style>
     .step { display: none; }
   body {
     margin: 0;
@@ -162,7 +162,70 @@
       padding: 10px 16px;
     }
   }
-  </style>
+  </style>-->
+  <style>
+  .step { display: none; }
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: clamp(14px, 5vw, 22px);
+}
+
+.container {
+  width: calc(100vw - 10px);
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  font-size: clamp(16px, 5vw, 36px);
+  margin-bottom: 16px;
+  word-wrap: break-word;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  font-size: clamp(16px, 5vw, 36px);
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+button {
+  font-size: 1.2rem;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+</style>
 </head>
 <body>
   <!-- Step 1: 作者名入力 -->
