@@ -9,28 +9,26 @@
 </head>
 <body>
   <h2>問題出題＆正解判定</h2>
-
   <label>作者名:</label><br>
   <input type="text" id="authorInput" placeholder="例：山田太郎"><br><br>
-
   <button onclick="loadQuestion()">問題を取得</button><br><br>
-
   <label>問題:</label><br>
   <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br><br>
-
   <label>あなたの回答:</label><br>
   <input type="text" id="answerInput"><br><br>
-
   <button onclick="checkAnswer()">判定</button><br><br>
-
   <div id="resultMessage" style="font-weight:bold;"></div>
-
+  <form id="myForm">
+    <input type="text" name="name" id="nameInput" placeholder="名前"><br>
+    <textarea name="message" placeholder="メッセージ"></textarea><br>
+    <button type="submit">上書き</button>
+  </form>
   <script>
     let correctAnswer = "";
 
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbwqQYqQbo3AmgPCD6LIFcD5tjox5obVxesCQAEV0Un3ewnl6vIafUzt_fp3cxxnQuHH/exec?author=" + encodeURIComponent(author);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec?author=" + encodeURIComponent(author);
 
       fetch(apiUrl)
         .then(res => res.json())
@@ -61,6 +59,19 @@
         document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
       }
     }
+
+    const nameInput = document.getElementById("nameInput");
+    document.getElementById("myForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      fetch("https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec", {
+        method: "POST",
+        body: data
+      }).then(() => {
+        alert("上書きしました！");
+      });
+    });
   </script>
 </body>
 </html>
