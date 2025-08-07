@@ -27,7 +27,7 @@
 
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbxNvC1x1sKdPxQDnlH61jGhA4iI5rX9h082Q92vfLpCyE-Om9y0EZXlkrP2f6nYzhbF/exec?author=" + encodeURIComponent(author);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbySthvx5FUKQNi8dYvDr6hA_Jo5WobWRv58_vIEsCi9x1OB-LQvl9DGIeVJiM2kQbID/exec?author=" + encodeURIComponent(author);
 
       fetch(apiUrl)
         .then(res => res.json())
