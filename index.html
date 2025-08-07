@@ -142,7 +142,7 @@
       showStep("step2");
     }
 
-    document.getElementById("myForm").addEventListener("submit", function(e) {
+    /*document.getElementById("myForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const form = e.target;
       const data = new FormData(form);
@@ -154,7 +154,36 @@
         showStep("step3");
         loadQuestion(); // 自動で問題取得
       });
-    });
+    });*/
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("nameInput").value.trim();
+  const messageRaw = this.message.value.trim();
+  const answer = this.answer.value.trim();
+
+  // ★ここで LaTeX 形式に整形
+  const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("message", message);
+  formData.append("answer", answer);
+
+  fetch("https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    alert("送信が完了しました！");
+    showStep(3); // Step3 に進む
+    loadQuestion(); // 問題読み込み
+  })
+  .catch(error => {
+    alert("送信中にエラーが発生しました: " + error);
+  });
+});
 
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
