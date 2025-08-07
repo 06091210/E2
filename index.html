@@ -22,7 +22,7 @@
     <textarea name="message" placeholder="メッセージ"></textarea><br>
     <button type="submit">上書き</button>
   </form>
-  <script>
+  <!--<script>
     let correctAnswer = "";
 
     function loadQuestion() {
@@ -70,6 +70,56 @@
         alert("上書きしました！");
       });
     });
-  </script>
+  </script>-->
+  <script>
+  let correctAnswer = "";
+
+  function loadQuestion() {
+    const author = document.getElementById("authorInput").value.trim();
+    const apiUrl = "https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec?author=" + encodeURIComponent(author);
+
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        if (data.question) {
+          document.getElementById("questionBox").innerHTML = data.question;
+          MathJax.typeset();
+          correctAnswer = data.answer.trim();
+          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
+        } else {
+          document.getElementById("questionBox").textContent = "";
+          correctAnswer = "";
+          document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
+        }
+      })
+      .catch(err => {
+        document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
+      });
+  }
+
+  function checkAnswer() {
+    const userAnswer = document.getElementById("answerInput").value.trim();
+    if (!correctAnswer) {
+      document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
+    } else if (userAnswer === correctAnswer) {
+      document.getElementById("resultMessage").textContent = "✅ 正解！";
+    } else {
+      document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
+    }
+  }
+
+  document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    fetch("https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec", {
+      method: "POST",
+      body: data
+    }).then(() => {
+      alert("上書きしました！");
+      loadQuestion(); // ←★ 上書き完了後に問題を自動取得
+    });
+  });
+</script>
 </body>
 </html>
