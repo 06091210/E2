@@ -251,9 +251,9 @@ button:hover {
   <div class="container">
     <h2>自分のユーザー名と問題を入力してください</h2>
     <form id="myForm">
-      <input type="text" id="nameInput" name="name" placeholder="名前を入力" required><br>
-      <textarea name="message" placeholder="メッセージを入力" required></textarea>
-      <input type="text" name="answer"><br>
+      <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名を入力" required><br>
+      <textarea name="message" placeholder="問題を入力" required></textarea>
+      <input type="text" name="answer" placeholder="問題の解答を入力"><br>
       <button type="submit">送信して次へ</button>
     </form>
   </div>
@@ -264,9 +264,9 @@ button:hover {
     <div class="container">
     <label>問題:</label><br>
     <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br>
-    <label>回答:</label><br>
+    <label>解答欄:</label><br>
     <input type="text" id="answerInput"><br>
-    <button onclick="checkAnswer()">判定</button><br>
+    <button onclick="checkAnswer()">解答</button><br>
     <div id="resultMessage" style="font-weight:bold;"></div>
     </div>
   </div>
@@ -280,7 +280,7 @@ button:hover {
     function goToStep2() {
       const author = document.getElementById("authorInput").value.trim();
       if (!author) {
-        alert("作者名を入力してください。");
+        alert("対戦相手のユーザー名を入力してください。");
         return;
       }
       showStep("step2");
@@ -320,7 +320,7 @@ button:hover {
   })
   .then(response => response.text())
   .then(result => {
-    alert("送信が完了しました！");
+    alert("問題の送信が完了しました！");
     showStep("step3"); // Step3 に進む
     loadQuestion(); // 問題読み込み
   })
@@ -344,7 +344,7 @@ button:hover {
           } else {
             document.getElementById("questionBox").textContent = "";
             correctAnswer = "";
-            document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
+            document.getElementById("resultMessage").textContent = "対戦相手のユーザー名が見つかりません。";
           }
         })
         .catch(err => {
