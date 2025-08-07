@@ -1,305 +1,67 @@
-<!--
-  テキストエリアの書き方（例）
-f'(x)
- = \frac{ df }{ dx }
- = \displaystyle \lim_{ \Delta x \to 0 } \frac{ f(x + \Delta x) - f(x) }{ \Delta x }
-\\これは，一般的な微分の定義とその記法を表しています．
-\\\boldsymbol{ 1 }
-=( \underbrace{ 1, 1, \ldots, 1 }_{ n } )^{ \mathrm{ T } }
-=\left(
-   \begin{array}{c}
-     1 \\
-     1 \\
-     \vdots \\
-     1
-   \end{array}
- \right)
--->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2</title>
-  <link rel="apple-touch-icon" href="Icon.jpeg">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async 
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
-  <script>
-    window.MathJax = {
-      tex: {
-        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
-        inlineMath: [["\\(", "\\)"]]
-      },
-      chtml: {
-        displayAlign: 'left'
-      }
-    };
-  </script>
-  <!--<style>
-    .bottom-bar {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 0;
-      background-color: #f0f0f0;
-      overflow-y: hidden;
-      transition: 0.3s;
-      border-top: 1px solid #ccc;
-      z-index: 1;
-      max-height: 40vh;
-      overflow-y: auto;
-    }
-    .bottom-bar-content {
-      padding: 10px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      overflow-y: auto;
-    }
-    .symbol-button {
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      padding: 0.5em;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000000
-    }
-    .symbol-button span {
-      display: block;
-      line-height: 1.4;
-    }
-    .openbtn {
-      position: fixed;
-      bottom: 0px;
-      right: 20px;
-      z-index: 2;
-      background: none;
-      border: none;
-      font-size: 4rem;
-      cursor: pointer;
-      color: #000000
-    }
-    textarea {
-      margin-bottom: 100px;
-    }
-  </style>-->
-  <style>
-  .bottom-bar {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    max-height: 50vh; /* 高さ上限を設定 */
-    background-color: #f0f0f0;
-    overflow-y: auto;
-    transition: 0.3s;
-    border-top: 1px solid #ccc;
-    z-index: 1;
-  }
-
-  .bottom-bar-content {
-    padding: 10px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    /*overflow-y: auto;*/
-  }
-
-  .symbol-button {
-    background: none;
-    border: none;
-    /*font-size: 1.2rem;*/
-    padding: 0.4em 0.6em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000000;
-    min-width: 48px;
-    min-height: 48px;
-    border-radius: 0.5em;
-    transition: background 0.2s;
-  }
-
-  .symbol-button:hover {
-    background: #e0e0e0;
-  }
-
-  .symbol-button span {
-    display: block;
-    line-height: 1.4;
-    text-align: center;
-  }
-
-  .openbtn {
-    position: fixed;
-    bottom: 0px;
-    right: 20px;
-    z-index: 2;
-    background: none;
-    border: none;
-    /*font-size: 3rem;*/
-    cursor: pointer;
-    color: #000000;
-  }
-
-  textarea {
-    margin-bottom: 100px;
-    /*font-size: 1.1rem;*/
-  }
-    /* ✅ 縦画面（スマホ縦持ちなど） */
-@media (orientation: portrait) {
-  body {
-    font-size: 1rem;
-  }
-  .symbol-button {
-    font-size: 1.1rem;
-  }
-  textarea {
-    font-size: 1rem;
-  }
-  .openbtn {
-    font-size: 6vw; /* ⌄ボタンも大きめに */
-  }
-}
-/* ✅ 横画面（PCやタブレット横持ち） */
-@media (orientation: landscape) {
-  body {
-    font-size: 1.2rem;
-  }
-  .symbol-button {
-    font-size: 1.3rem;
-  }
-  textarea {
-    font-size: 1.2rem;
-  }
-  .openbtn {
-    font-size: 4vw; /* ⌄ボタンは少し小さめに */
-  }
-}
-</style>
-
+  <title>問題と解答判定</title>
 </head>
 <body>
-  <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
-  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
-  <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
-  <div id="bottomBar" class="bottom-bar">
-    <div class="bottom-bar-content">
-    </div>
-  </div>
-  <!--以下はSpreadSheet連携のプログラム-->
-  <form id="myForm">
-    <input type="text" name="name" id="nameInput" placeholder="名前"><br>
-    <textarea name="message" placeholder="メッセージ"></textarea><br>
-    <button type="submit">上書き</button>
-  </form>
-  <button onclick="loadMessage()">取得</button>
-  <div id="result"></div>
+  <h2>問題検索＆正解判定</h2>
+
+  <!-- 作者名入力 -->
+  <label for="authorInput">作者名:</label><br>
+  <input type="text" id="authorInput" placeholder="例: 山田太郎"><br><br>
+
+  <!-- 問題表示 -->
+  <label for="questionBox">問題:</label><br>
+  <textarea id="questionBox" rows="3" cols="40" readonly></textarea><br><br>
+
+  <!-- 回答入力 -->
+  <label for="answerInput">あなたの回答:</label><br>
+  <input type="text" id="answerInput"><br><br>
+
+  <!-- ボタン -->
+  <button onclick="loadQuestion()">問題を取得</button>
+  <button onclick="checkAnswer()">回答を判定</button><br><br>
+
+  <!-- 結果表示 -->
+  <div id="resultMessage" style="font-weight: bold;"></div>
+
   <script>
-  const input = document.getElementById("latexInput");
-  const output = document.getElementById("output");
-  input.addEventListener("input", () => {
-    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
-    MathJax.typesetPromise([output]);
-  });
-  function addText(text) {
-    input.value += text;
-    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
-    MathJax.typesetPromise([output]);
-  }
-  function toggleBottomBar() {
-    const bar = document.getElementById("bottomBar");
-    if (bar.style.height === "0px" || bar.style.height === "") {
-      bar.style.height = "160px";
-      MathJax.typesetPromise([bar]);
-    } else {
-      bar.style.height = "0px";
-    }
-  }
-  const commandList = [
-    { code: String.raw`\frac{1}{2}`, preview: String.raw`\frac{1}{2}` },
-    { code: String.raw`\dfrac{1}{2}` , preview: String.raw`\dfrac{1}{2}` },
-    { code: String.raw`\require{physics} \flatfrac{1}{2}` , preview: String.raw`\require{physics} \flatfrac{1}{2}` },
-    { code: String.raw`\left( -\frac{1}{2} \right)^2` , preview: String.raw`\left( -\frac{1}{2} \right)^2` },
-    { code: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` , preview: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` },
-    { code: String.raw`\ddots` , preview: String.raw`\ddots` },
-    { code: String.raw`0.\dot{0}\dot{9}` , preview: String.raw`0.\dot{0}\dot{9}` },
-    { code: String.raw`\pi` , preview: String.raw`\pi` },
-    { code: String.raw`\ldots` , preview: String.raw`\ldots` },
-    { code: String.raw`\sqrt{2}` , preview: String.raw`\sqrt{2}` },
-    { code: String.raw`\cdots` , preview: String.raw`\cdots` },
-    { code: String.raw`\infty` , preview: String.raw`\infty` },
-  ];
-  function buildButtons() {
-    const container = document.querySelector(".bottom-bar-content");
-    if (!container) {
-      console.error("⚠ .bottom-bar-content が見つかりません");
-      return;
-    }
-    commandList.forEach(cmd => {
-      const btn = document.createElement("button");
-      btn.className = "symbol-button";
-      btn.type = "button";
-      btn.addEventListener("click", () => addText(cmd.code));
-      const span = document.createElement("span");
-      span.innerHTML = `\\[${cmd.preview}\\]`;
-      btn.appendChild(span);
-      container.appendChild(btn);
-    });
-    MathJax.typesetPromise([container]);
-  }
-  document.addEventListener("DOMContentLoaded", buildButtons);
-//以下はSpreadSheet連携のプログラム
-  const nameInput = document.getElementById("nameInput");
-    document.getElementById("myForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      fetch("https://script.google.com/macros/s/AKfycbxCgt8PFPWbCIOJOFbUTG1Dns9jK8Pfp0T6Xu-pLy2lHTGm6ljSIUIvS8gCMv-ydeXC/exec", {
-        method: "POST",
-        body: data
-      }).then(() => {
-        alert("上書きしました！");
-      });
-    });
-    /*parent.postMessage({ type: "requestValue" }, "*");
-    window.addEventListener("message", (event) => {
-      if (event.data.type === "setValue") {
-        const name = event.data.value;
-        nameInput.value = name;
-        loadMessage();
-      }
-    });*/
-    function loadMessage() {
-      const inputUsername = nameInput.value.trim();
-      const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be";
+    let correctAnswer = "";  // 正解を保存しておく変数
+
+    function loadQuestion() {
+      const author = document.getElementById("authorInput").value.trim();
+      const API_URL = "https://api.sheetbest.com/sheets/3a58e982-d42d-4a9e-90a3-9182b5c3c9be"; // シートBest APIのURL
+
       fetch(API_URL)
         .then(response => response.json())
         .then(data => {
-          const match = data.find(row => row.name === inputUsername);
-          const resultDiv = document.getElementById("result");
+          const match = data.find(row => row["作者名"] === author);
           if (match) {
-            resultDiv.textContent = match["KSポイント"] || "ポイントが登録されていません。";
+            document.getElementById("questionBox").value = match["問題"] || "問題が見つかりません。";
+            correctAnswer = (match["解答"] || "").trim();
+            document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           } else {
-            resultDiv.textContent = "一致する名前が見つかりませんでした。";
+            document.getElementById("questionBox").value = "";
+            correctAnswer = "";
+            document.getElementById("resultMessage").textContent = "一致する作者が見つかりません。";
           }
         })
         .catch(error => {
-          document.getElementById("result").textContent = "エラーが発生しました: " + error;
+          document.getElementById("resultMessage").textContent = "読み込みエラー: " + error;
         });
     }
-</script>
 
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.trim();
+      if (correctAnswer === "") {
+        document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
+      } else if (userAnswer === correctAnswer) {
+        document.getElementById("resultMessage").textContent = "✅ 正解です！";
+      } else {
+        document.getElementById("resultMessage").textContent = "❌ 不正解です。正解は「" + correctAnswer + "」です。";
+      }
+    }
+  </script>
 </body>
 </html>
