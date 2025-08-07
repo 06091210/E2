@@ -95,7 +95,7 @@
     <button onclick="goToStep2()">次へ</button>
   </div>
 
-  <!-- Step 2: メッセージ上書き -->
+  <!-- Step 2: メッセージ上書き
   <div id="step2" class="step">
     <h2>② メッセージを上書き</h2>
     <form id="myForm">
@@ -103,7 +103,18 @@
       <textarea name="message" placeholder="メッセージ"></textarea><br>
       <button type="submit">上書き</button>
     </form>
-  </div>
+  </div>-->
+  <!-- ★ Step 2内のフォーム修正 -->
+<div id="step2" class="step">
+  <h2>② メッセージを上書き</h2>
+  <form id="myForm">
+    <input type="text" name="name" id="nameInput" placeholder="名前（あなたの名前）"><br>
+    <textarea name="message" placeholder="メッセージ（例：KSポイント）"></textarea><br>
+    <input type="text" name="answer" placeholder="回答（例：x=3）"><br>
+    <button type="submit">上書き</button>
+  </form>
+</div>
+
 
   <!-- Step 3: 問題と解答 -->
   <div id="step3" class="step">
@@ -148,7 +159,7 @@
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
       const apiUrl = "https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec?author=" + encodeURIComponent(author);
-
+      document.getElementById("resultMessage").textContent = "読み込み中..."; // ←追加
       fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
