@@ -13,7 +13,7 @@
   <button onclick="loadQuestion()">問題を取得</button><br><br>
 
   <label>問題:</label><br>
-  <textarea id="questionBox" rows="3" cols="40" readonly></textarea><br><br>
+  <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br><br>
 
   <label>あなたの回答:</label><br>
   <input type="text" id="answerInput"><br><br>
@@ -33,11 +33,11 @@
         .then(res => res.json())
         .then(data => {
           if (data.question) {
-            document.getElementById("questionBox").value = data.question;
+            document.getElementById("questionBox").textContent = data.question;
             correctAnswer = data.answer.trim();
             document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           } else {
-            document.getElementById("questionBox").value = "";
+            document.getElementById("questionBox").textContent = "";
             correctAnswer = "";
             document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
           }
