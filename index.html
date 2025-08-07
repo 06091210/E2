@@ -27,11 +27,11 @@
 
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycby36xJAVhGtINXqPQ75XkQW9m7MS_s0tqkKyVq2o7xtxtbsrag27uRz-HLaT7MoGkpN/exec?author=" + encodeURIComponent(author);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbwqQYqQbo3AmgPCD6LIFcD5tjox5obVxesCQAEV0Un3ewnl6vIafUzt_fp3cxxnQuHH/exec?author=" + encodeURIComponent(author);
 
       fetch(apiUrl)
         .then(res => res.json())
-        /*.then(data => {
+        .then(data => {
           if (data.question) {
             document.getElementById("questionBox").value = data.question;
             correctAnswer = data.answer.trim();
@@ -41,19 +41,7 @@
             correctAnswer = "";
             document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
           }
-        })*/
-        .then(data => {
-  if (data.question) {
-    document.getElementById("questionBox").value = data.question;
-    correctAnswer = (data.answer || "").trim();  // ← ここも防御的に
-    document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-  } else {
-    document.getElementById("questionBox").value = "";
-    correctAnswer = "";
-    document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
-  }
-})
-
+        })
         .catch(err => {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
