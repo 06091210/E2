@@ -110,7 +110,7 @@ button:hover {
   formData.append("name", name);
   formData.append("message", message);
   formData.append("answer", answer);
-  fetch("https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
     method: "POST",
     body: formData
   })
@@ -156,7 +156,7 @@ button:hover {
     }*/
     function loadQuestion() {
   const author = document.getElementById("authorInput").value.trim();
-  const apiUrl = "https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
+  const apiUrl = "https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
 
   document.getElementById("resultMessage").textContent = "読み込み中...";
 
@@ -190,7 +190,7 @@ button:hover {
   formData.append("name", name);
   formData.append("end", "end"); // フラグ的に送る
 
-  fetch("https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
     method: "POST",
     body: formData
   })
@@ -268,7 +268,7 @@ button:hover {
     return;
   }
 
-  const url = "https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec";
+  const url = "https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec";
   const params = new URLSearchParams({
     mode: "checkEnd",
     name: author
@@ -302,7 +302,7 @@ button:hover {
   poll();
 }
 //追加
-    function checkAnswer() {
+    /*function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       if (!correctAnswer) {
         document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
@@ -312,7 +312,45 @@ button:hover {
         //document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
         document.getElementById("resultMessage").textContent = "❌ 不正解…";
       }
-    }
+    }*/
+    //追加
+    function checkAnswer() {
+  const userAnswer = document.getElementById("answerInput").value.trim();
+  const myName = document.getElementById("nameInput").value.trim();
+  const opponentName = document.getElementById("authorInput").value.trim();
+
+  if (!correctAnswer) {
+    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
+  } else if (userAnswer === correctAnswer) {
+    document.getElementById("resultMessage").textContent = "✅ 正解！";
+
+    // ✅ データ削除要求を送信
+    deleteData(myName);         // 自分の問題・解答を削除
+    deleteData(opponentName);  // 相手の問題・解答も削除
+  } else {
+    document.getElementById("resultMessage").textContent = "❌ 不正解…";
+  }
+}
+    function deleteData(name) {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("message", ""); // 空文字で上書き
+  formData.append("answer", "");  // 空文字で上書き
+  formData.append("mode", "delete"); // modeを使ってサーバー側で判断
+
+  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log(name + " のデータ削除完了:", result);
+  })
+  .catch(error => {
+    console.error(name + " のデータ削除失敗:", error);
+  });
+}
+//追加
     function showStep(stepId) {
       const steps = ["step1", "step2", "step3"];
       steps.forEach(id => {
