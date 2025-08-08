@@ -327,10 +327,10 @@ button:hover {
   })
   .then(response => response.text())
   .then(result => {
-    console.log(name + " のデータ削除完了:", result);
+    alert(name + " のデータ削除完了:", result);
   })
   .catch(error => {
-    console.error(name + " のデータ削除失敗:", error);
+    alert(name + " のデータ削除失敗:", error);
   });
 }
     
