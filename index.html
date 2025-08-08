@@ -1,78 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>E2</title>
-  <link rel="apple-touch-icon" href="Icon.jpeg">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body>
-  <label>作者名:</label><br>
-  <input type="text" id="authorInput" placeholder="例：山田太郎"><br>
-  <button onclick="loadQuestion()">問題を取得</button><br>
-  <label>問題:</label><br>
-  <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br>
-  <label>あなたの回答:</label><br>
-  <input type="text" id="answerInput"><br>
-  <button onclick="checkAnswer()">判定</button><br>
-  <div id="resultMessage" style="font-weight:bold;"></div>
-  <form id="myForm">
-    <input type="text" name="name" id="nameInput" placeholder="名前"><br>
-    <textarea name="message" placeholder="メッセージ"></textarea><br>
-    <button type="submit">上書き</button>
-  </form>
-  <script>
-    let correctAnswer = "";
-
-    function loadQuestion() {
-      const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec?author=" + encodeURIComponent(author);
-
-      fetch(apiUrl)
-        .then(res => res.json())
-        .then(data => {
-          if (data.question) {
-            document.getElementById("questionBox").innerHTML = data.question;
-            MathJax.typeset();
-            correctAnswer = data.answer.trim();
-            document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-          } else {
-            document.getElementById("questionBox").textContent = "";
-            correctAnswer = "";
-            document.getElementById("resultMessage").textContent = "作者名が見つかりません。";
-          }
-        })
-        .catch(err => {
-          document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
-        });
-    }
-
-    function checkAnswer() {
-      const userAnswer = document.getElementById("answerInput").value.trim();
-      if (!correctAnswer) {
-        document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-      } else if (userAnswer === correctAnswer) {
-        document.getElementById("resultMessage").textContent = "✅ 正解！";
-      } else {
-        document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
-      }
-    }
-
-    document.getElementById("myForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      fetch("https://script.google.com/macros/s/AKfycbxv0lXDnChIqarAGhT7SD-uUIHSuU2BRjMWugLxh7pbsC01YtS39wmUz-iTJPHvvEgM/exec", {
-        method: "POST",
-        body: data
-      }).then(() => {
-        alert("上書きしました！");
-      });
-    });
-  </script>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -82,192 +7,29 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <!--<style>
-    .step { display: none; }
-  body {
-    margin: 0;
-    font-family: sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: clamp(14px, 5vw, 22px);
-  }
-
-  /*.container {
-    width: 90%;
-    max-width: 500px;
-    background-color: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }*/    
-    .container {
-  width: 100%;
-  max-width: none; /* あとでJSで制御する */
-  margin: 0 auto;
-  padding: 0;
-  box-sizing: border-box;
-    }
-
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 16px;
-  }
-
-  input[type="text"],
-  textarea {
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 12px;
-    margin: 12px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-
-  textarea {
-    height: 150px;
-    resize: vertical;
-  }
-
-  button {
-    font-size: 1.2rem;
-    padding: 10px 24px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    margin-top: 12px;
-  }
-
-  button:hover {
-    background-color: #45a049;
-  }
-
-  @media (max-width: 600px) {
-    h2 {
-      font-size: 1.2rem;
-    }
-    input[type="text"],
-    textarea {
-      font-size: 1rem;
-    }
-    button {
-      font-size: 1rem;
-      padding: 10px 16px;
-    }
-  }
-  </style>-->
-  <!--<style>
-  .step { display: none; }
-
-body {
-  margin: 0;
-  font-family: sans-serif;
-  /*background-color: #f0f0f0;*/
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: clamp(14px, 5vw, 22px);
-}
-
-.container {
-  /*width: calc(100vw - 10px);*/
-  width: 100vw;
-  max-width: none;
-  margin: 0 auto;
-  padding: 0;
-  /*box-sizing: border-box;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
-  text-align: center;
-}
-
-h2 {
-  font-size: clamp(16px, 5vw, 36px);
-  margin-bottom: 16px;
-  word-wrap: break-word;
-}
-
-input[type="text"],
-textarea {
-  width: 100%;
-  font-size: clamp(16px, 5vw, 36px);
-  padding: 12px;
-  margin: 12px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-button {
-  font-size: 1.8rem;
-  padding: 16px 32px;
-  border: none;
-  border-radius: 8px;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-  margin-top: 12px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-    @media (max-width: 600px) {
-  h2 {
-  font-size: 2rem;
-  margin-bottom: 16px
-  }
-  input[type="text"],
-  textarea {
-    font-size: 1.2rem;
-  }
-  button {
-    font-size: 1.5rem;
-    padding: 14px 24px;
-  }
-}
-
-</style>-->
   <style>
     .step { display: none; }
     body {
   margin: 0;
   font-family: sans-serif;
-  background-color: white; /* 背景グレー→白に */
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 1rem; /* ルートサイズ基準に */
+  font-size: 1rem;
 }
-
 .container {
-  width: calc(100% - 20px); /* 左右10pxずつの余白 */
+  width: calc(100% - 20px);
   max-width: none;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
 }
-
 h2 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-
 input[type="text"],
 textarea {
   width: 100%;
@@ -278,12 +40,10 @@ textarea {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
-
 textarea {
   height: 10rem;
   resize: vertical;
 }
-
 button {
   font-size: 1.2rem;
   padding: 0.8rem 1.5rem;
@@ -294,17 +54,12 @@ button {
   cursor: pointer;
   margin-top: 1rem;
 }
-
 button:hover {
   background-color: #45a049;
 }
-
-/* メディアクエリは不要になりますが、必要なら残してもOK */
   </style>
-
 </head>
 <body>
-  <!-- Step 1: 作者名入力 -->
   <div id="step1" class="step">
     <div class="container">
     <!--<h2>対戦相手のユーザー名を入力してください</h2>-->
@@ -312,17 +67,6 @@ button:hover {
     <button onclick="goToStep2()">次へ</button>
     </div>
   </div>
-
-  <!-- Step 2: メッセージ上書き
-  <div id="step2" class="step">
-    <h2>② メッセージを上書き</h2>
-    <form id="myForm">
-      <input type="text" name="name" id="nameInput" placeholder="名前（あなたの名前）"><br>
-      <textarea name="message" placeholder="メッセージ"></textarea><br>
-      <button type="submit">上書き</button>
-    </form>
-  </div>-->
-  <!-- ★ Step 2内のフォーム修正 -->
 <div class="step" id="step2">
   <div class="container">
     <!--<h2>自分のユーザー名と問題を入力してください</h2>-->
@@ -334,23 +78,18 @@ button:hover {
     </form>
   </div>
 </div>
-
-  <!-- Step 3: 問題と解答 -->
   <div id="step3" class="step">
     <div class="container">
-    <label>問題:</label><br>
+    <h2>問題:</h2><br>
     <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br>
-    <label>解答欄:</label><br>
+    <h2>解答欄:</h2><br>
     <input type="text" id="answerInput"><br>
     <button onclick="checkAnswer()">解答</button><br>
     <div id="resultMessage" style="font-weight:bold;"></div>
     </div>
   </div>
-
   <script>
     let correctAnswer = "";
-
-    // 初期表示
     document.getElementById("step1").style.display = "block";
 
     function goToStep2() {
@@ -361,35 +100,16 @@ button:hover {
       }
       showStep("step2");
     }
-
-    /*document.getElementById("myForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      fetch("https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec", {
-        method: "POST",
-        body: data
-      }).then(() => {
-        alert("上書きしました！");
-        showStep("step3");
-        loadQuestion(); // 自動で問題取得
-      });
-    });*/
     document.getElementById("myForm").addEventListener("submit", function(event) {
   event.preventDefault();
-
   const name = document.getElementById("nameInput").value.trim();
   const messageRaw = this.message.value.trim();
   const answer = this.answer.value.trim();
-
-  // ★ここで LaTeX 形式に整形
   const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
-
   const formData = new FormData();
   formData.append("name", name);
   formData.append("message", message);
   formData.append("answer", answer);
-
   fetch("https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec", {
     method: "POST",
     body: formData
@@ -397,18 +117,17 @@ button:hover {
   .then(response => response.text())
   .then(result => {
     alert("問題の送信が完了しました！");
-    showStep("step3"); // Step3 に進む
-    loadQuestion(); // 問題読み込み
+    showStep("step3");
+    loadQuestion();
   })
   .catch(error => {
     alert("送信中にエラーが発生しました: " + error);
   });
 });
-
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
       const apiUrl = "https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec?author=" + encodeURIComponent(author);
-      document.getElementById("resultMessage").textContent = "読み込み中..."; // ←追加
+      document.getElementById("resultMessage").textContent = "読み込み中...";
       fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
@@ -427,7 +146,6 @@ button:hover {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
     }
-
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       if (!correctAnswer) {
@@ -438,35 +156,17 @@ button:hover {
         document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
       }
     }
-
     function showStep(stepId) {
       const steps = ["step1", "step2", "step3"];
       steps.forEach(id => {
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
-/*
-function resizeContainer() {
-  const container = document.querySelector(".container");
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const shortSide = Math.min(w, h);
-  const targetWidth = shortSide - 10;
-
-  container.style.width = targetWidth + "px";
-  container.style.margin = "0 auto";
-}
-
-// 初回実行＋画面リサイズ時にも対応
-window.addEventListener("load", resizeContainer);
-window.addEventListener("resize", resizeContainer);*/
-    
 function adjustRootFontSize() {
   const shortSide = Math.min(window.innerWidth, window.innerHeight);
   const fontSize = shortSide * 0.04; // 短辺の4%
   document.documentElement.style.fontSize = fontSize + "px";
 }
-
 window.addEventListener("load", adjustRootFontSize);
 window.addEventListener("resize", adjustRootFontSize);
   </script>
