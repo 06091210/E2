@@ -132,7 +132,7 @@ button:hover {
     alert("送信中にエラーが発生しました: " + error);
   });
 });
-    function loadQuestion() {
+    /*function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
       const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?name=" + encodeURIComponent(author);
       document.getElementById("resultMessage").textContent = "読み込み中...";
@@ -153,7 +153,37 @@ button:hover {
         .catch(err => {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
-    }
+    }*/
+    function loadQuestion() {
+  const author = document.getElementById("authorInput").value.trim();
+  const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?name=" + encodeURIComponent(author);
+  document.getElementById("resultMessage").textContent = "読み込み中...";
+
+  fetch(apiUrl)
+    .then(res => res.text()) // ← テキストで受け取る
+    .then(text => {
+      console.log("サーバーの応答内容:", text); // ← まず内容を見る
+      try {
+        const data = JSON.parse(text); // JSONとしてパースできるか試す
+        if (data.question) {
+          document.getElementById("questionBox").innerHTML = data.question;
+          MathJax.typeset();
+          correctAnswer = data.answer.trim();
+          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
+        } else {
+          document.getElementById("questionBox").textContent = "";
+          correctAnswer = "";
+          document.getElementById("resultMessage").textContent = "対戦相手のユーザー名が見つかりません。";
+        }
+      } catch (e) {
+        document.getElementById("resultMessage").textContent = "JSON解析エラー: " + e + "\nレスポンス: " + text;
+      }
+    })
+    .catch(err => {
+      document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
+    });
+}
+    
     function sendEndFlag(name) {
   const formData = new FormData();
   formData.append("name", name);
