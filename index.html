@@ -295,7 +295,7 @@ button:hover {
       })
       .catch(error => {
         document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
-        setTimeout(poll, 3000);
+        setTimeout(poll, 0);
       });
   }
 
