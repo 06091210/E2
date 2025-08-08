@@ -314,23 +314,6 @@ button:hover {
       }
     }*/
     //追加
-    function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim();
-  const myName = document.getElementById("nameInput").value.trim();
-  const opponentName = document.getElementById("authorInput").value.trim();
-
-  if (!correctAnswer) {
-    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-  } else if (userAnswer === correctAnswer) {
-    document.getElementById("resultMessage").textContent = "✅ 正解！";
-
-    // ✅ データ削除要求を送信
-    deleteData(myName);         // 自分の問題・解答を削除
-    deleteData(opponentName);  // 相手の問題・解答も削除
-  } else {
-    document.getElementById("resultMessage").textContent = "❌ 不正解…";
-  }
-}
     function deleteData(name) {
   const formData = new FormData();
   formData.append("name", name);
@@ -349,6 +332,24 @@ button:hover {
   .catch(error => {
     console.error(name + " のデータ削除失敗:", error);
   });
+}
+    
+    function checkAnswer() {
+  const userAnswer = document.getElementById("answerInput").value.trim();
+  const myName = document.getElementById("nameInput").value.trim();
+  const opponentName = document.getElementById("authorInput").value.trim();
+
+  if (!correctAnswer) {
+    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
+  } else if (userAnswer === correctAnswer) {
+    document.getElementById("resultMessage").textContent = "✅ 正解！";
+
+    // ✅ データ削除要求を送信
+    deleteData(myName);         // 自分の問題・解答を削除
+    deleteData(opponentName);  // 相手の問題・解答も削除
+  } else {
+    document.getElementById("resultMessage").textContent = "❌ 不正解";
+  }
 }
 //追加
     function showStep(stepId) {
