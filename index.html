@@ -307,8 +307,8 @@ button:hover {
   <!-- Step 1: 作者名入力 -->
   <div id="step1" class="step">
     <div class="container">
-    <h2>対戦相手のユーザー名を入力してください</h2>
-    <input type="text" id="authorInput" placeholder="例：山田太郎"><br>
+    <!--<h2>対戦相手のユーザー名を入力してください</h2>-->
+    <input type="text" id="authorInput" placeholder="対戦相手のユーザー名を入力"><br>
     <button onclick="goToStep2()">次へ</button>
     </div>
   </div>
@@ -325,7 +325,7 @@ button:hover {
   <!-- ★ Step 2内のフォーム修正 -->
 <div class="step" id="step2">
   <div class="container">
-    <h2>自分のユーザー名と問題を入力してください</h2>
+    <!--<h2>自分のユーザー名と問題を入力してください</h2>-->
     <form id="myForm">
       <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名を入力" required><br>
       <textarea name="message" placeholder="問題を入力" required></textarea>
@@ -463,7 +463,7 @@ window.addEventListener("resize", resizeContainer);*/
     
 function adjustRootFontSize() {
   const shortSide = Math.min(window.innerWidth, window.innerHeight);
-  const fontSize = shortSide * 0.05; // 短辺の3%
+  const fontSize = shortSide * 0.04; // 短辺の3%
   document.documentElement.style.fontSize = fontSize + "px";
 }
 
