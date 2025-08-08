@@ -115,12 +115,19 @@ button:hover {
     body: formData
   })
   .then(response => response.text())
-  .then(result => {
+  /*.then(result => {
     alert("問題の送信が完了しました！");
     sendEndFlag(name);//追加
     showStep("step3");
     loadQuestion();
-  })
+  })*/
+    .then(result => {
+  alert("問題の送信が完了しました！");
+  sendEndFlag(name); // 自分に対して「end」フラグを送信
+  const author = document.getElementById("authorInput").value.trim(); // 対戦相手の名前
+  checkIfOpponentReady(author); // ← ★ここでチェック
+})
+
   .catch(error => {
     alert("送信中にエラーが発生しました: " + error);
   });
@@ -147,7 +154,6 @@ button:hover {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
     }
-//追加
     function sendEndFlag(name) {
   const formData = new FormData();
   formData.append("name", name);
@@ -166,7 +172,28 @@ button:hover {
   });
 }
 //追加
-    
+    function checkIfOpponentReady(author) {
+  const url = "https://script.google.com/macros/s/AKfycbxDSFKyhRoSGTGr6xgSyvIG30hirXyW_L4MFRhDJhp-6M7Cp3oUaSqt1iVudytfFkHT/exec";
+  const params = new URLSearchParams({
+    mode: "checkEnd",
+    name: author
+  });
+
+  fetch(`${url}?${params.toString()}`)
+    .then(response => response.text())
+    .then(result => {
+      if (result === "end") {
+        showStep("step3");
+        loadQuestion();
+      } else {
+        alert("問題作成中です。しばらくしてからもう一度お試しください。");
+      }
+    })
+    .catch(error => {
+      alert("状態の確認中にエラーが発生しました: " + error);
+    });
+}
+//追加
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       if (!correctAnswer) {
