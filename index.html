@@ -217,7 +217,7 @@ button:hover {
           document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           loadQuestion();
         } else if (result.trim() === "not_ready") {
-          document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
+          document.getElementById("resultMessage").textContent = "相手のend待ちです…";
           setTimeout(poll, 2000);
         } else {
           document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
