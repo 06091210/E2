@@ -110,7 +110,7 @@ button:hover {
   formData.append("name", name);
   formData.append("message", message);
   formData.append("answer", answer);
-  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxtiQ1qcrJqgfx1SJ-IJv82IAN187GbMKiHjh-pfjSPNAyf3d35ywxnmznqBGobZr1N/exec", {
     method: "POST",
     body: formData
   })
@@ -156,7 +156,7 @@ button:hover {
     }*/
     function loadQuestion() {
   const author = document.getElementById("authorInput").value.trim();
-  const apiUrl = "https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
+  const apiUrl = "https://script.google.com/macros/s/AKfycbxtiQ1qcrJqgfx1SJ-IJv82IAN187GbMKiHjh-pfjSPNAyf3d35ywxnmznqBGobZr1N/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
 
   document.getElementById("resultMessage").textContent = "読み込み中...";
 
@@ -190,7 +190,7 @@ button:hover {
   formData.append("name", name);
   formData.append("end", "end"); // フラグ的に送る
 
-  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxtiQ1qcrJqgfx1SJ-IJv82IAN187GbMKiHjh-pfjSPNAyf3d35ywxnmznqBGobZr1N/exec", {
     method: "POST",
     body: formData
   })
@@ -268,7 +268,7 @@ button:hover {
     return;
   }
 
-  const url = "https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec";
+  const url = "https://script.google.com/macros/s/AKfycbxtiQ1qcrJqgfx1SJ-IJv82IAN187GbMKiHjh-pfjSPNAyf3d35ywxnmznqBGobZr1N/exec";
   const params = new URLSearchParams({
     mode: "checkEnd",
     name: author
@@ -321,7 +321,7 @@ button:hover {
   formData.append("answer", "");  // 空文字で上書き
   formData.append("mode", "delete"); // modeを使ってサーバー側で判断
 
-  fetch("https://script.google.com/macros/s/AKfycbx5Yubu_O5AGPwG6XtHJOTImgXV8ExFDlP5peh1a4QuKqvIJ5d8zrEWUSjHdJzrudye/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxtiQ1qcrJqgfx1SJ-IJv82IAN187GbMKiHjh-pfjSPNAyf3d35ywxnmznqBGobZr1N/exec", {
     method: "POST",
     body: formData
   })
