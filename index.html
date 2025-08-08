@@ -134,7 +134,7 @@ button:hover {
 });
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?author=" + encodeURIComponent(author);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?author=" + encodeURIComponent(name);
       document.getElementById("resultMessage").textContent = "読み込み中...";
       fetch(apiUrl)
         .then(res => res.json())
