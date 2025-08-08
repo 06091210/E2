@@ -172,7 +172,7 @@ button:hover {
   });
 }
 //追加
-    function checkIfOpponentReady(author) {
+  /*  function checkIfOpponentReady(author) {
   const url = "https://script.google.com/macros/s/AKfycbzzl7P0RtzLQLCerHBVy8_swwBwRoasd7I3ut7g1mFKqEgVvf7Tq-_vGLVzMTUrx_aD/exec";
   const params = new URLSearchParams({
     mode: "checkEnd",
@@ -192,6 +192,38 @@ button:hover {
     .catch(error => {
       alert("状態の確認中にエラーが発生しました: " + error);
     });
+}*/
+    function checkIfOpponentReady(author) {
+  const url = "https://script.google.com/macros/s/AKfycbzzl7P0RtzLQLCerHBVy8_swwBwRoasd7I3ut7g1mFKqEgVvf7Tq-_vGLVzMTUrx_aD/exec";
+  const params = new URLSearchParams({
+    mode: "checkEnd",
+    name: author
+  });
+
+  // step3を表示して待機メッセージを出す
+  showStep("step3");
+  document.getElementById("questionBox").textContent = "";
+  document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
+
+  function poll() {
+    fetch(`${url}?${params.toString()}`)
+      .then(response => response.text())
+      .then(result => {
+        if (result === "end") {
+          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
+          loadQuestion();
+        } else {
+          document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
+          setTimeout(poll, 2000); // 2秒ごとに再チェック
+        }
+      })
+      .catch(error => {
+        document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
+        setTimeout(poll, 3000); // エラー後も再試行
+      });
+  }
+
+  poll(); // 最初のチェックを開始
 }
 //追加
     function checkAnswer() {
