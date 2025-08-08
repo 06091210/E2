@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-test</title>
+  <title>E2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -217,7 +217,7 @@ button:hover {
           document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           loadQuestion();
         } else if (result.trim() === "not_ready") {
-          document.getElementById("resultMessage").textContent = "相手のend待ちです…";
+          document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
           setTimeout(poll, 2000);
         } else {
           document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
