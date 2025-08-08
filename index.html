@@ -309,7 +309,8 @@ button:hover {
       } else if (userAnswer === correctAnswer) {
         document.getElementById("resultMessage").textContent = "✅ 正解！";
       } else {
-        document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
+        //document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
+        document.getElementById("resultMessage").textContent = "❌ 不正解…";
       }
     }
     function showStep(stepId) {
