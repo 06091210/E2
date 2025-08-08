@@ -243,86 +243,64 @@ button:hover {
 
 </style>-->
   <style>
-  .step {
-    display: none;
-  }
+    .step { display: none; }
+    body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: white; /* 背景グレー→白に */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1rem; /* ルートサイズ基準に */
+}
 
-  body {
-    margin: 0;
-    font-family: sans-serif;
-    /*background-color: white; /* ← 背景を白に */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .container {
+.container {
+  width: calc(100% - 20px); /* 左右10pxずつの余白 */
+  max-width: none;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
 }
 
-  h2 {
-    font-size: 2rem; /* ← 見出しを大きく */
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
-  input[type="text"],
-  textarea {
-    width: 100%;
-    font-size: 1.4rem;  /* ← テキスト入力を大きく */
-    padding: 14px;
-    margin: 14px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-
-  textarea {
-    height: 200px;
-    resize: vertical;
-  }
-
-  button {
-    font-size: 1.8rem;      /* ← ボタン文字を大きく */
-    padding: 16px 32px;     /* ← ボタン自体も大きく */
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    margin-top: 16px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  button:hover {
-    background-color: #45a049;
-  }
-/* 追加・修正: スマホで左右の余白を狭く */
-@media (max-width: 600px) {
-  .container {
-    padding: 0 8px; /* ← 左右8pxだけ余白を確保 */
-  }
-
-  h2 {
-    font-size: 1.6rem;
-  }
-
-  input[type="text"],
-  textarea {
-    font-size: 1.2rem;
-  }
-
-  button {
-    font-size: 1.5rem;
-    padding: 14px 24px;
-  }
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
-</style>
+
+input[type="text"],
+textarea {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 10rem;
+  resize: vertical;
+}
+
+button {
+  font-size: 1.2rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* メディアクエリは不要になりますが、必要なら残してもOK */
+  </style>
 
 </head>
 <body>
@@ -482,26 +460,15 @@ function resizeContainer() {
 // 初回実行＋画面リサイズ時にも対応
 window.addEventListener("load", resizeContainer);
 window.addEventListener("resize", resizeContainer);*/
-function adjustFontSize() {
-  const shortSide = Math.min(window.innerWidth, window.innerHeight);
-  const fontSize = shortSide * 0.03; // 画面短辺の3%
-  document.querySelector(".container").style.fontSize = fontSize + "px";
-}
-
-window.addEventListener("load", adjustFontSize);
-window.addEventListener("resize", adjustFontSize);
     
-function resizeContainer() {
-  const container = document.querySelector(".container");
-  const w = window.innerWidth;
-  const targetWidth = w - 20; // 左右合計20px → 10pxずつ
-  container.style.width = targetWidth + "px";
-  container.style.margin = "0 auto";
+function adjustRootFontSize() {
+  const shortSide = Math.min(window.innerWidth, window.innerHeight);
+  const fontSize = shortSide * 0.03; // 短辺の3%
+  document.documentElement.style.fontSize = fontSize + "px";
 }
 
-// 初期実行とリサイズ時に対応
-window.addEventListener("load", resizeContainer);
-window.addEventListener("resize", resizeContainer);
+window.addEventListener("load", adjustRootFontSize);
+window.addEventListener("resize", adjustRootFontSize);
   </script>
 </body>
 </html>
