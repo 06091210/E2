@@ -195,7 +195,7 @@ button:hover {
 }*/
     function checkIfOpponentReady(author) {
   if (!author) {
-    alert("対戦相手のユーザー名が不正です。もう一度入力してください。");
+    alert("対戦相手のユーザー名が不正です。");
     return;
   }
 
@@ -205,7 +205,6 @@ button:hover {
     name: author
   });
 
-  // step3を表示して待機メッセージを出す
   showStep("step3");
   document.getElementById("questionBox").textContent = "";
   document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
@@ -214,12 +213,14 @@ button:hover {
     fetch(`${url}?${params.toString()}`)
       .then(response => response.text())
       .then(result => {
-        if (result === "end") {
+        if (result.trim() === "end") {
           document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           loadQuestion();
-        } else {
+        } else if (result.trim() === "not_ready") {
           document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
           setTimeout(poll, 2000);
+        } else {
+          document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
         }
       })
       .catch(error => {
@@ -230,7 +231,6 @@ button:hover {
 
   poll();
 }
-
 //追加
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
