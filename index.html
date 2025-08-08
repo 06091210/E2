@@ -110,13 +110,14 @@ button:hover {
   formData.append("name", name);
   formData.append("message", message);
   formData.append("answer", answer);
-  fetch("https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxDSFKyhRoSGTGr6xgSyvIG30hirXyW_L4MFRhDJhp-6M7Cp3oUaSqt1iVudytfFkHT/exec", {
     method: "POST",
     body: formData
   })
   .then(response => response.text())
   .then(result => {
     alert("問題の送信が完了しました！");
+    sendEndFlag(name);//追加
     showStep("step3");
     loadQuestion();
   })
@@ -126,7 +127,7 @@ button:hover {
 });
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbzPRsIm4gx7whRA1prx2yguMePU97Ajs-Du_Swdnm9SUb2nmIUlhxeV9b9djD8eM1gR/exec?author=" + encodeURIComponent(author);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbxDSFKyhRoSGTGr6xgSyvIG30hirXyW_L4MFRhDJhp-6M7Cp3oUaSqt1iVudytfFkHT/exec?author=" + encodeURIComponent(author);
       document.getElementById("resultMessage").textContent = "読み込み中...";
       fetch(apiUrl)
         .then(res => res.json())
@@ -146,6 +147,26 @@ button:hover {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
     }
+//追加
+    function sendEndFlag(name) {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("end", "end"); // フラグ的に送る
+
+  fetch("https://script.google.com/macros/s/AKfycbxDSFKyhRoSGTGr6xgSyvIG30hirXyW_L4MFRhDJhp-6M7Cp3oUaSqt1iVudytfFkHT/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log("end flag sent successfully");
+  })
+  .catch(error => {
+    console.error("end flag sending failed: ", error);
+  });
+}
+//追加
+    
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       if (!correctAnswer) {
