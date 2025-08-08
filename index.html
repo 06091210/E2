@@ -258,10 +258,8 @@ button:hover {
   }
 
   .container {
-  width: 100%;
-  max-width: 480px;
   margin: 0 auto;
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -492,6 +490,18 @@ function adjustFontSize() {
 
 window.addEventListener("load", adjustFontSize);
 window.addEventListener("resize", adjustFontSize);
+    
+function resizeContainer() {
+  const container = document.querySelector(".container");
+  const w = window.innerWidth;
+  const targetWidth = w - 20; // 左右合計20px → 10pxずつ
+  container.style.width = targetWidth + "px";
+  container.style.margin = "0 auto";
+}
+
+// 初期実行とリサイズ時に対応
+window.addEventListener("load", resizeContainer);
+window.addEventListener("resize", resizeContainer);
   </script>
 </body>
 </html>
