@@ -134,7 +134,7 @@ button:hover {
 });
     function loadQuestion() {
       const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?author=" + encodeURIComponent(name);
+      const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?name=" + encodeURIComponent(auther);
       document.getElementById("resultMessage").textContent = "読み込み中...";
       fetch(apiUrl)
         .then(res => res.json())
@@ -207,7 +207,7 @@ button:hover {
 
   showStep("step3");
   document.getElementById("questionBox").textContent = "";
-  document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
+  document.getElementById("resultMessage").textContent = "問題制作中です…";
 
   function poll() {
     fetch(`${url}?${params.toString()}`)
@@ -217,7 +217,7 @@ button:hover {
           document.getElementById("resultMessage").textContent = "問題を読み込みました。";
           loadQuestion();
         } else if (result.trim() === "not_ready") {
-          document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
+          document.getElementById("resultMessage").textContent = "問題制作中です…";
           setTimeout(poll, 2000);
         } else {
           document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
