@@ -194,6 +194,11 @@ button:hover {
     });
 }*/
     function checkIfOpponentReady(author) {
+  if (!author) {
+    alert("対戦相手のユーザー名が不正です。もう一度入力してください。");
+    return;
+  }
+
   const url = "https://script.google.com/macros/s/AKfycbzzl7P0RtzLQLCerHBVy8_swwBwRoasd7I3ut7g1mFKqEgVvf7Tq-_vGLVzMTUrx_aD/exec";
   const params = new URLSearchParams({
     mode: "checkEnd",
@@ -214,17 +219,18 @@ button:hover {
           loadQuestion();
         } else {
           document.getElementById("resultMessage").textContent = "相手のend待ち中です…";
-          setTimeout(poll, 2000); // 2秒ごとに再チェック
+          setTimeout(poll, 2000);
         }
       })
       .catch(error => {
         document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
-        setTimeout(poll, 3000); // エラー後も再試行
+        setTimeout(poll, 3000);
       });
   }
 
-  poll(); // 最初のチェックを開始
+  poll();
 }
+
 //追加
     function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
