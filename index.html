@@ -223,7 +223,7 @@ button:hover {
     .catch(error => {
       alert("状態の確認中にエラーが発生しました: " + error);
     });
-}*/
+}
     function checkIfOpponentReady(author) {
   if (!author) {
     alert("対戦相手のユーザー名が不正です。");
@@ -252,6 +252,45 @@ button:hover {
           setTimeout(poll, 2000);
         } else {
           document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
+        }
+      })
+      .catch(error => {
+        document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
+        setTimeout(poll, 3000);
+      });
+  }
+
+  poll();
+}*/
+    function checkIfOpponentReady(author) {
+  if (!author) {
+    alert("対戦相手のユーザー名が不正です。");
+    return;
+  }
+
+  const url = "https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec";
+  const params = new URLSearchParams({
+    mode: "checkEnd",
+    name: author
+  });
+
+  showStep("step3");
+  document.getElementById("questionBox").textContent = "";
+  document.getElementById("resultMessage").textContent = "問題制作中です…";
+
+  function poll() {
+    fetch(`${url}?${params.toString()}`)
+      .then(response => response.json())  // ← JSONとして受け取る
+      .then(data => {
+        const status = data.status;
+        if (status === "end") {
+          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
+          loadQuestion();
+        } else if (status === "not_ready") {
+          document.getElementById("resultMessage").textContent = "問題制作中です…";
+          setTimeout(poll, 2000);
+        } else {
+          document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + status + "）";
         }
       })
       .catch(error => {
