@@ -125,7 +125,6 @@ button:hover {
   alert("問題の送信が完了しました！");
   sendEndFlag(name); // 自分に対して「end」フラグを送信
   const author = document.getElementById("authorInput").value.trim(); // 対戦相手の名前
-  
   checkIfOpponentReady(author); // ← ★ここでチェック
 })
 
@@ -183,15 +182,12 @@ button:hover {
   fetch(`${url}?${params.toString()}`)
     .then(response => response.text())
     .then(result => {
-      /*if (result === "end") {
+      if (result === "end") {
         showStep("step3");
         loadQuestion();
       } else {
         alert("問題作成中です。しばらくしてからもう一度お試しください。");
-      }*/
-      while (result !== "end") {}
-      showStep("step3");
-      loadQuestion();
+      }
     })
     .catch(error => {
       alert("状態の確認中にエラーが発生しました: " + error);
