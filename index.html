@@ -262,7 +262,7 @@ button:hover {
     max-width: none;
     margin: 0 auto;
     padding: 0;
-    /*box-sizing: border-box;*/
+    box-sizing: border-box
   }
 
   h2 {
@@ -304,22 +304,26 @@ button:hover {
   button:hover {
     background-color: #45a049;
   }
-
-  @media (max-width: 600px) {
-    h2 {
-      font-size: 1.6rem;
-    }
-
-    input[type="text"],
-    textarea {
-      font-size: 1.2rem;
-    }
-
-    button {
-      font-size: 1.5rem;
-      padding: 14px 24px;
-    }
+/* 追加・修正: スマホで左右の余白を狭く */
+@media (max-width: 600px) {
+  .container {
+    padding: 0 8px; /* ← 左右8pxだけ余白を確保 */
   }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  input[type="text"],
+  textarea {
+    font-size: 1.2rem;
+  }
+
+  button {
+    font-size: 1.5rem;
+    padding: 14px 24px;
+  }
+}
 </style>
 
 </head>
