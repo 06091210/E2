@@ -58,11 +58,10 @@ button:hover {
   background-color: #45a049;
 }
 	  #questionBox {
-  max-width: 100%;       /* 画面幅からはみ出さない */
-  overflow-x: auto;      /* 横スクロールを許可 */
-  display: block;        /* ブロック要素化してスクロール有効化 */
-  white-space: pre-wrap; /* 改行や空白を保持しつつ折り返し */
-  word-break: keep-all;  /* 単語や数式の途中で勝手に折り返さない */
+  width: 10rem;         /* 横幅を固定 */
+  overflow-x: auto;     /* 横スクロールを許可 */
+  display: block;       /* スクロールを有効化 */
+  white-space: nowrap;  /* 折り返し禁止（長い部分はスクロール） */
   box-sizing: border-box;
 }
   </style>
