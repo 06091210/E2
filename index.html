@@ -57,6 +57,17 @@ button {
 button:hover {
   background-color: #45a049;
 }
+    /*追加*/
+    .horizontal-items {
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+
+    .item {
+	padding: 0 10px;
+    }
+}
   </style>
 </head>
 <body>
@@ -81,7 +92,12 @@ button:hover {
   <div id="step3" class="step">
     <div class="container">
     <!--<h2>問題:</h2><br>-->
-    <h2 id="questionBox" style="white-space: pre-wrap;"></h2><br>
+    <ul class="horizontal-items"><!--追加-->
+      <li class="item">
+        <h2 id="questionBox" style="white-space: pre-wrap;"></h2>
+      </li>
+    </ul>
+    <br>
     <!--<h2>解答欄:</h2><br>-->
     <input type="text" id="answerInput" placeholder="解答欄"><br>
     <button onclick="checkAnswer()">解答</button><br>
