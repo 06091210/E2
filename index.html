@@ -61,7 +61,9 @@ button:hover {
   width: 15rem;         /* 横幅を固定 */
   overflow-x: auto;     /* 横スクロールを許可 */
   display: block;       /* スクロールを有効化 */
-  white-space: nowrap;  /* 折り返し禁止（長い部分はスクロール） */
+  /*white-space: nowrap;  /* 折り返し禁止（長い部分はスクロール） */
+  white-space: pre-wrap; /* 改行や空白を保持しつつ折り返し */
+  word-break: keep-all;  /* 単語や数式の途中で勝手に折り返さない */
   box-sizing: border-box;
 }
   </style>
@@ -87,6 +89,7 @@ button:hover {
 </div>
   <div id="step3" class="step">
     <div class="container">
+		<div id="timer" style="font-weight:bold; font-size:1.5rem; margin-bottom:1rem;">00:00</div><!--追加-->
     <!--<h2>問題:</h2><br>-->
 		<h2 id="questionBox"></h2>
     <br>
@@ -162,6 +165,26 @@ button:hover {
           document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
         });
     }*/
+	  // ===== タイマー機能 =====
+let timerInterval;
+let startTime;
+
+function startTimer() {
+  startTime = Date.now();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const seconds = Math.floor(elapsed / 1000) % 60;
+    const minutes = Math.floor(elapsed / 60000);
+    document.getElementById("timer").textContent =
+      String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+	  
     function loadQuestion() {
   const author = document.getElementById("authorInput").value.trim();
   const apiUrl = "https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
@@ -179,6 +202,7 @@ button:hover {
           MathJax.typeset();
           correctAnswer = data.answer.trim();
           document.getElementById("resultMessage").textContent = "問題を読み込みました。";
+			startTimer(); // ← ★問題表示後にタイマー開始
         } else {
           document.getElementById("questionBox").textContent = "";
           correctAnswer = "";
@@ -351,6 +375,7 @@ button:hover {
     document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
   } else if (userAnswer === correctAnswer) {
     document.getElementById("resultMessage").textContent = "✅ 正解！";
+	  stopTimer(); // ← ★正解時にタイマー停止
 
     // ✅ データ削除要求を送信
     deleteData(myName);         // 自分の問題・解答を削除
