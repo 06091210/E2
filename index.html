@@ -124,18 +124,24 @@
             if (data.status === "ready") {
               const delay = data.startTime - Date.now();
               if (delay > 0) {
-                document.getElementById("resultMessage").textContent = `開始まで ${Math.ceil(delay/1000)} 秒`;
+                //document.getElementById("resultMessage").textContent = `開始まで ${Math.ceil(delay/1000)} 秒`;
                 setTimeout(() => {
                   startTimer();
                   document.getElementById("questionBox").innerHTML = data.question;
                   correctAnswer = data.answer.trim();
-                  MathJax.typeset();
+                  //MathJax.typeset();
+                  MathJax.startup.promise.then(() => {
+                    MathJax.typesetPromise();
+                  });
                 }, delay);
               } else {
                 startTimer();
                 document.getElementById("questionBox").innerHTML = data.question;
                 correctAnswer = data.answer.trim();
-                MathJax.typeset();
+                //MathJax.typeset();
+                MathJax.startup.promise.then(() => {
+                    MathJax.typesetPromise();
+                  });
               }
             } else {
               setTimeout(poll, 1000);
@@ -153,7 +159,8 @@
       const name = document.getElementById("nameInput").value.trim();
       const messageRaw = this.message.value.trim();
       const answer = this.answer.value.trim();
-      const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
+      //const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
+      const message = `\\[${messageRaw}\\]`;
 
       const formData = new FormData();
       formData.append("name", name);
