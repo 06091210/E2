@@ -10,97 +10,90 @@
   <style>
     .step { display: none; }
     body {
-  margin: 0;
-  font-family: sans-serif;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 1rem;
-}
-.container {
-  width: calc(100% - 20px);
-  max-width: none;
-  margin: 0 auto;
-  padding: 0;
-  box-sizing: border-box;
-}
-h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-input[type="text"],
-textarea {
-  width: 100%;
-  font-size: 1.1rem;
-  padding: 0.8rem;
-  margin: 1rem 0;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-textarea {
-  height: 10rem;
-  resize: vertical;
-}
-button {
-  font-size: 1.2rem;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-button:hover {
-  background-color: #45a049;
-}
-	  #questionBox {
-  width: 15rem;         /* 横幅を固定 */
-  overflow-x: auto;     /* 横スクロールを許可 */
-  display: block;       /* スクロールを有効化 */
-  /*white-space: nowrap;  /* 折り返し禁止（長い部分はスクロール） */
-  white-space: pre-wrap; /* 改行や空白を保持しつつ折り返し */
-  word-break: keep-all;  /* 単語や数式の途中で勝手に折り返さない */
-  box-sizing: border-box;
-}
+      margin: 0;
+      font-family: sans-serif;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 1rem;
+    }
+    .container {
+      width: calc(100% - 20px);
+      margin: 0 auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 0.8rem;
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      height: 10rem;
+      resize: vertical;
+    }
+    button {
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #questionBox {
+      width: 15rem;
+      overflow-x: auto;
+      display: block;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 <body>
   <div id="step1" class="step">
     <div class="container">
-    <!--<h2>対戦相手のユーザー名を入力してください</h2>-->
-    <input type="text" id="authorInput" placeholder="対戦相手のユーザー名"><br>
-    <button onclick="goToStep2()">次へ</button>
+      <input type="text" id="authorInput" placeholder="対戦相手のユーザー名"><br>
+      <button onclick="goToStep2()">次へ</button>
     </div>
   </div>
-<div class="step" id="step2">
-  <div class="container">
-    <!--<h2>自分のユーザー名と問題を入力してください</h2>-->
-    <form id="myForm">
-      <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名" required><br>
-      <textarea name="message" placeholder="問題" required></textarea>
-      <input type="text" name="answer" placeholder="問題の解答"><br>
-      <button type="submit">送信して次へ</button>
-    </form>
+
+  <div id="step2" class="step">
+    <div class="container">
+      <form id="myForm">
+        <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名" required><br>
+        <textarea name="message" placeholder="問題" required></textarea>
+        <input type="text" name="answer" placeholder="問題の解答"><br>
+        <button type="submit">送信して次へ</button>
+      </form>
+    </div>
   </div>
-</div>
+
   <div id="step3" class="step">
     <div class="container">
-		<div id="timer" style="font-weight:bold; font-size:1.5rem; margin-bottom:1rem;">00:00</div><!--追加-->
-    <!--<h2>問題:</h2><br>-->
-		<h2 id="questionBox"></h2>
-    <br>
-    <!--<h2>解答欄:</h2><br>-->
-    <input type="text" id="answerInput" placeholder="解答欄"><br>
-    <button onclick="checkAnswer()">解答</button><br>
-    <div id="resultMessage" style="font-weight:bold;"></div>
+      <div id="timer" style="font-weight:bold; font-size:1.5rem; margin-bottom:1rem;">00:00</div>
+      <h2 id="questionBox"></h2>
+      <input type="text" id="answerInput" placeholder="解答欄"><br>
+      <button onclick="checkAnswer()">解答</button><br>
+      <div id="resultMessage" style="font-weight:bold;"></div>
     </div>
   </div>
+
   <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzlsb4cCJrZPHnvTNgpRVAB0Mc4chPwZfpEeUn3_iTZoZ-QzjxoTcmX0wUC5-rXZGCY/exec";
     let correctAnswer = "";
+
     document.getElementById("step1").style.display = "block";
 
     function goToStep2() {
@@ -111,293 +104,143 @@ button:hover {
       }
       showStep("step2");
     }
+
+    // ===== markReady & waitForStart =====
+    function markReady(myName) {
+      const formData = new FormData();
+      formData.append("name", myName);
+      formData.append("mode", "ready");
+
+      fetch(GAS_URL, { method: "POST", body: formData })
+        .then(r => r.text())
+        .then(t => console.log("ready sent:", t));
+    }
+
+    function waitForStart(opponentName) {
+      function poll() {
+        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
+          .then(r => r.json())
+          .then(data => {
+            if (data.status === "ready") {
+              const delay = data.startTime - Date.now();
+              if (delay > 0) {
+                document.getElementById("resultMessage").textContent = `開始まで ${Math.ceil(delay/1000)} 秒`;
+                setTimeout(() => {
+                  startTimer();
+                  document.getElementById("questionBox").innerHTML = data.question;
+                  correctAnswer = data.answer.trim();
+                  MathJax.typeset();
+                }, delay);
+              } else {
+                startTimer();
+                document.getElementById("questionBox").innerHTML = data.question;
+                correctAnswer = data.answer.trim();
+                MathJax.typeset();
+              }
+            } else {
+              setTimeout(poll, 1000);
+            }
+          });
+      }
+      showStep("step3");
+      document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
+      poll();
+    }
+
+    // ===== フォーム送信 =====
     document.getElementById("myForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  const name = document.getElementById("nameInput").value.trim();
-  const messageRaw = this.message.value.trim();
-  const answer = this.answer.value.trim();
-  const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("message", message);
-  formData.append("answer", answer);
-  fetch("https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec", {
-    method: "POST",
-    body: formData
-  })
-  .then(response => response.text())
-  /*.then(result => {
-    alert("問題の送信が完了しました！");
-    sendEndFlag(name);//追加
-    showStep("step3");
-    loadQuestion();
-  })*/
-    .then(result => {
-  alert("問題の送信が完了しました！");
-  sendEndFlag(name); // 自分に対して「end」フラグを送信
-  const author = document.getElementById("authorInput").value.trim(); // 対戦相手の名前
-  checkIfOpponentReady(author); // ← ★ここでチェック
-})
+      event.preventDefault();
+      const name = document.getElementById("nameInput").value.trim();
+      const messageRaw = this.message.value.trim();
+      const answer = this.answer.value.trim();
+      const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
 
-  .catch(error => {
-    alert("送信中にエラーが発生しました: " + error);
-  });
-});
-    /*function loadQuestion() {
-      const author = document.getElementById("authorInput").value.trim();
-      const apiUrl = "https://script.google.com/macros/s/AKfycbyg8TffiiY72tHN_-5sp5U4_s-dbf0XM0gzCWdTfuM-n3o5MIR6iLo-Y91zquKaMTH8/exec?name=" + encodeURIComponent(author);
-      document.getElementById("resultMessage").textContent = "読み込み中...";
-      fetch(apiUrl)
-        .then(res => res.json())
-        .then(data => {
-          if (data.question) {
-            document.getElementById("questionBox").innerHTML = data.question;
-            MathJax.typeset();
-            correctAnswer = data.answer.trim();
-            document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-          } else {
-            document.getElementById("questionBox").textContent = "";
-            correctAnswer = "";
-            document.getElementById("resultMessage").textContent = "対戦相手のユーザー名が見つかりません。";
-          }
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("message", message);
+      formData.append("answer", answer);
+
+      fetch(GAS_URL, { method: "POST", body: formData })
+        .then(response => response.text())
+        .then(result => {
+          alert("問題の送信が完了しました！");
+          markReady(name);  // 自分をreadyに
+          const author = document.getElementById("authorInput").value.trim();
+          waitForStart(author); // 相手を待つ
         })
-        .catch(err => {
-          document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
+        .catch(error => {
+          alert("送信中にエラーが発生しました: " + error);
         });
-    }*/
-	  // ===== タイマー機能 =====
-let timerInterval;
-let startTime;
-
-function startTimer() {
-  startTime = Date.now();
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const seconds = Math.floor(elapsed / 1000) % 60;
-    const minutes = Math.floor(elapsed / 60000);
-    document.getElementById("timer").textContent =
-      String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
-  }, 1000);
-}
-
-function stopTimer() {
-  clearInterval(timerInterval);
-}
-	  
-    function loadQuestion() {
-  const author = document.getElementById("authorInput").value.trim();
-  const apiUrl = "https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec?mode=author&author=" + encodeURIComponent(author); // ← 修正済み
-
-  document.getElementById("resultMessage").textContent = "読み込み中...";
-
-  fetch(apiUrl)
-    .then(res => res.text())
-    .then(text => {
-      console.log("サーバーの応答内容:", text);
-      try {
-        const data = JSON.parse(text);
-        if (data.question) {
-          document.getElementById("questionBox").innerHTML = data.question;
-          MathJax.typeset();
-          correctAnswer = data.answer.trim();
-          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-			startTimer(); // ← ★問題表示後にタイマー開始
-        } else {
-          document.getElementById("questionBox").textContent = "";
-          correctAnswer = "";
-          document.getElementById("resultMessage").textContent = "対戦相手のユーザー名が見つかりません。";
-        }
-      } catch (e) {
-        document.getElementById("resultMessage").textContent = "JSON解析エラー: " + e + "\nレスポンス: " + text;
-      }
-    })
-    .catch(err => {
-      document.getElementById("resultMessage").textContent = "読み込みエラー: " + err;
     });
-}
-    
-    function sendEndFlag(name) {
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("end", "end"); // フラグ的に送る
 
-  fetch("https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec", {
-    method: "POST",
-    body: formData
-  })
-  .then(response => response.text())
-  .then(result => {
-    console.log("end flag sent successfully");
-  })
-  .catch(error => {
-    console.error("end flag sending failed: ", error);
-  });
-}
-//追加
-  /*  function checkIfOpponentReady(author) {
-  const url = "https://script.google.com/macros/s/AKfycbzzl7P0RtzLQLCerHBVy8_swwBwRoasd7I3ut7g1mFKqEgVvf7Tq-_vGLVzMTUrx_aD/exec";
-  const params = new URLSearchParams({
-    mode: "checkEnd",
-    name: author
-  });
+    // ===== タイマー =====
+    let timerInterval;
+    function startTimer() {
+      const startTime = Date.now();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const seconds = Math.floor(elapsed / 1000) % 60;
+        const minutes = Math.floor(elapsed / 60000);
+        document.getElementById("timer").textContent =
+          String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+      }, 1000);
+    }
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
 
-  fetch(`${url}?${params.toString()}`)
-    .then(response => response.text())
-    .then(result => {
-      if (result === "end") {
-        showStep("step3");
-        loadQuestion();
-      } else {
-        alert("問題作成中です。しばらくしてからもう一度お試しください。");
-      }
-    })
-    .catch(error => {
-      alert("状態の確認中にエラーが発生しました: " + error);
-    });
-}
-    function checkIfOpponentReady(author) {
-  if (!author) {
-    alert("対戦相手のユーザー名が不正です。");
-    return;
-  }
+    // ===== データ削除 =====
+    function deleteData(name) {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("message", "");
+      formData.append("answer", "");
+      formData.append("mode", "delete");
 
-  const url = "https://script.google.com/macros/s/AKfycbyPiHzJdXfK7v_UvW6C76u0qI2MWrvIS91hJ6phw98w_3En2hT-rYk1qhjcl97liEWv/exec";
-  const params = new URLSearchParams({
-    mode: "checkEnd",
-    name: author
-  });
+      fetch(GAS_URL, { method: "POST", body: formData })
+        .then(response => response.text())
+        .then(result => {
+          console.log(name + " のデータ削除完了:", result);
+        })
+        .catch(error => {
+          console.error(name + " のデータ削除失敗:", error);
+        });
+    }
 
-  showStep("step3");
-  document.getElementById("questionBox").textContent = "";
-  document.getElementById("resultMessage").textContent = "問題制作中です…";
-
-  function poll() {
-    fetch(`${url}?${params.toString()}`)
-      .then(response => response.text())
-      .then(result => {
-        if (result.trim() === "end") {
-          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-          loadQuestion();
-        } else if (result.trim() === "not_ready") {
-          document.getElementById("resultMessage").textContent = "問題制作中です…";
-          setTimeout(poll, 2000);
-        } else {
-          document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + result + "）";
-        }
-      })
-      .catch(error => {
-        document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
-        setTimeout(poll, 3000);
-      });
-  }
-
-  poll();
-}*/
-    function checkIfOpponentReady(author) {
-  if (!author) {
-    alert("対戦相手のユーザー名が不正です。");
-    return;
-  }
-
-  const url = "https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec";
-  const params = new URLSearchParams({
-    mode: "checkEnd",
-    name: author
-  });
-
-  showStep("step3");
-  document.getElementById("questionBox").textContent = "";
-  document.getElementById("resultMessage").textContent = "問題制作中です…";
-
-  function poll() {
-    fetch(`${url}?${params.toString()}`)
-      .then(response => response.json())  // ← JSONとして受け取る
-      .then(data => {
-        const status = data.status;
-        if (status === "end") {
-          document.getElementById("resultMessage").textContent = "問題を読み込みました。";
-          loadQuestion();
-        } else if (status === "not_ready") {
-          document.getElementById("resultMessage").textContent = "問題制作中です…";
-          setTimeout(poll, 2000);
-        } else {
-          document.getElementById("resultMessage").textContent = "相手の状態が取得できません（" + status + "）";
-        }
-      })
-      .catch(error => {
-        document.getElementById("resultMessage").textContent = "状態確認エラー: " + error;
-        setTimeout(poll, 0);
-      });
-  }
-
-  poll();
-}
-//追加
-    /*function checkAnswer() {
+    // ===== 解答チェック =====
+    function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
+      const myName = document.getElementById("nameInput").value.trim();
+      const opponentName = document.getElementById("authorInput").value.trim();
+
       if (!correctAnswer) {
         document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
       } else if (userAnswer === correctAnswer) {
         document.getElementById("resultMessage").textContent = "✅ 正解！";
+        stopTimer();
+        deleteData(myName);
+        deleteData(opponentName);
       } else {
-        //document.getElementById("resultMessage").textContent = "❌ 不正解。正解は「" + correctAnswer + "」です。";
-        document.getElementById("resultMessage").textContent = "❌ 不正解…";
+        document.getElementById("resultMessage").textContent = "❌ 不正解";
       }
-    }*/
-    //追加
-    function deleteData(name) {
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("message", ""); // 空文字で上書き
-  formData.append("answer", "");  // 空文字で上書き
-  formData.append("mode", "delete"); // modeを使ってサーバー側で判断
+    }
 
-  fetch("https://script.google.com/macros/s/AKfycbzvOyq97HXQXZgD1V3qIe7HYEyzROdwS6h-_t1AHqxgZ_MGIsdlrNsUk4CKm90aup14/exec", {
-    method: "POST",
-    body: formData
-  })
-  .then(response => response.text())
-  .then(result => {
-    alert(name + " のデータ削除完了:", result);
-  })
-  .catch(error => {
-    alert(name + " のデータ削除失敗:", error);
-  });
-}
-    
-    function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim();
-  const myName = document.getElementById("nameInput").value.trim();
-  const opponentName = document.getElementById("authorInput").value.trim();
-
-  if (!correctAnswer) {
-    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-  } else if (userAnswer === correctAnswer) {
-    document.getElementById("resultMessage").textContent = "✅ 正解！";
-	  stopTimer(); // ← ★正解時にタイマー停止
-
-    // ✅ データ削除要求を送信
-    deleteData(myName);         // 自分の問題・解答を削除
-    deleteData(opponentName);  // 相手の問題・解答も削除
-  } else {
-    document.getElementById("resultMessage").textContent = "❌ 不正解";
-  }
-}
-//追加
+    // ===== 表示切替 =====
     function showStep(stepId) {
-      const steps = ["step1", "step2", "step3"];
-      steps.forEach(id => {
+      ["step1", "step2", "step3"].forEach(id => {
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
-function adjustRootFontSize() {
-  const shortSide = Math.min(window.innerWidth, window.innerHeight);
-  const fontSize = shortSide * 0.04; // 短辺の4%
-  document.documentElement.style.fontSize = fontSize + "px";
-}
-window.addEventListener("load", adjustRootFontSize);
-window.addEventListener("resize", adjustRootFontSize);
+
+    // ===== フォント調整 =====
+    function adjustRootFontSize() {
+      const shortSide = Math.min(window.innerWidth, window.innerHeight);
+      const fontSize = shortSide * 0.04;
+      document.documentElement.style.fontSize = fontSize + "px";
+    }
+    window.addEventListener("load", adjustRootFontSize);
+    window.addEventListener("resize", adjustRootFontSize);
   </script>
 </body>
 </html>
