@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-test</title>
+  <title>E2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -91,7 +91,7 @@
   </div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxADtdw9BHw9VzcVf63ZFMF-4v2kc9AYUEImJI-IuwZjf2FtN4igSaLWTjGssrT1Vsw/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyhDH65RBnDqd94N3kQKX7qE13N8QZvF0pZKBbO3Rtyn1Z4xhqfdx3kkXiSV7ukbXwD/exec";
     let correctAnswer = "";
 
     document.getElementById("step1").style.display = "block";
@@ -159,6 +159,7 @@
       formData.append("name", name);
       formData.append("message", message);
       formData.append("answer", answer);
+      formData.append("mode", "sendQuestion"); // 追加
 
       fetch(GAS_URL, { method: "POST", body: formData })
         .then(response => response.text())
