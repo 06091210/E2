@@ -335,12 +335,17 @@ function startTimer(startTimestamp) {
         fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
   .then(r => r.json())
   .then(data => {
-    alert("自分のタイム:", elapsedMs);//console.log to alert
-    alert("相手のタイム:", data.time);//console.log to alert
+    alert("自分のタイム(ms):" + String(elapsedMs));
+    alert("相手のタイム(data.time):" + String(data.time));
 
     const opponentTime = Number(data.time);
-    if (isNaN(opponentTime)) {
+    if (isNaN(opponentTime) || opponentTime <= 0) {
       showBattleResult("相手のタイムがまだ記録されていません。");
+      return;
+    }
+
+    if (elapsedMs <= 0) {
+      showBattleResult("自分のタイムが正しく取得できていません。");
       return;
     }
 
@@ -351,6 +356,10 @@ function startTimer(startTimestamp) {
     } else {
       showBattleResult("引き分け");
     }
+  })
+  .catch(err => {
+    console.error("タイム取得失敗:", err);
+    showBattleResult("相手のタイムの取得に失敗しました。");
   });
 //↑書き換え
       });
