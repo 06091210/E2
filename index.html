@@ -271,7 +271,7 @@
       .then(r => r.text())
       .then(() => {
         // 相手のタイムを取得して勝敗判定
-        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
+        /*fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
           .then(r => r.json())
           .then(data => {
             if (data.time != null) {
@@ -286,7 +286,28 @@
             } else {
               showBattleResult("相手のタイムがまだ記録されていません。少々お待ちください。");
             }
-          });
+          });*/
+        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
+  .then(r => r.json())
+  .then(data => {
+    alert("自分のタイム:", elapsedMs);//console.log to alert
+    alert("相手のタイム:", data.time);//console.log to alert
+
+    const opponentTime = Number(data.time);
+    if (isNaN(opponentTime)) {
+      showBattleResult("相手のタイムがまだ記録されていません。");
+      return;
+    }
+
+    if (elapsedMs < opponentTime) {
+      showBattleResult("勝利 🎉");
+    } else if (elapsedMs > opponentTime) {
+      showBattleResult("敗北 😞");
+    } else {
+      showBattleResult("引き分け");
+    }
+  });
+//↑書き換え
       });
 
   } else {
