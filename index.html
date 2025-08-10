@@ -236,7 +236,7 @@
     
     // ===== 表示切替 =====
     function showStep(stepId) {
-      ["step1", "step2", "step3", "step4"].forEach(id => { //"step4"←追加
+      ["step1", "step2", "step3"].forEach(id => {
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
