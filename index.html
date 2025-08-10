@@ -272,10 +272,13 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
         if (!isNaN(opponentTime) && opponentTime > 0) {
           if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
+            deleteData(myName);//追加
           } else if (myTime > opponentTime) {
             showBattleResult("敗北 😞");
+            deleteData(myName);//追加
           } else {
             showBattleResult("引き分け");
+            deleteData(myName);//追加
           }
         } else {
           if (Date.now() - startTime < maxWaitMs) {
@@ -306,7 +309,7 @@ function restart() {
 }
 
     function showStep(stepId) {
-      ["step1", "step2", "step3", "step4"].forEach(id => {　//"step4"を追加
+      ["step1", "step2", "step3", "step4"].forEach(id => {
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
