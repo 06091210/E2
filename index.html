@@ -404,7 +404,8 @@ function checkAnswer() {
 }
 
 // 相手のタイムが記録されるまで待つ（ポーリング）
-function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
+//function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
+function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs = 100) {
   const startTime = Date.now();
 
   function poll() {
