@@ -91,7 +91,7 @@
   </div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbw0684zx2anBrs0g688ZHdEqaDx6xJKESmnxKJpqDCBiwmv2rvU3jfdrAtJv8EBbFZT/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyH4vzYlk8dwtq3Tf30IFvRGkDblahiAp-E19J65uWdWBrWKTmhSUblvVck_I8uG8fM/exec";
     let correctAnswer = "";
 
     document.getElementById("step1").style.display = "block";
@@ -233,7 +233,8 @@
         document.getElementById("resultMessage").textContent = "❌ 不正解";
       }
     }*/
-    function checkAnswer() {
+    // ===== 解答チェック =====
+function checkAnswer() {
   const userAnswer = document.getElementById("answerInput").value.trim();
   const myName = document.getElementById("nameInput").value.trim();
   const opponentName = document.getElementById("authorInput").value.trim();
@@ -246,27 +247,39 @@
   if (userAnswer === correctAnswer) {
     stopTimer();
 
-    // 正解時刻をサーバーに送信
+    // 自分の経過時間（秒）
+    const myTime = document.getElementById("timer").textContent;
+    const [min, sec] = myTime.split(":").map(Number);
+    const elapsedSec = min * 60 + sec;
+
+    // サーバーに自分の解答時間を送信
     const formData = new FormData();
     formData.append("name", myName);
-    formData.append("time", Date.now()); // ミリ秒
-    formData.append("opponent", opponentName);
-    formData.append("mode", "recordTime");
-
+    formData.append("mode", "sendTime");
+    formData.append("time", elapsedSec);
     fetch(GAS_URL, { method: "POST", body: formData })
-      .then(r => r.json())
-      .then(data => {
-        if (data.result === "win") {
-          document.getElementById("resultMessage").textContent = "🏆 勝利！";
-        } else if (data.result === "lose") {
-          document.getElementById("resultMessage").textContent = "💀 敗北…";
-        } else {
-          document.getElementById("resultMessage").textContent = "✅ 正解！(相手待ち)";
-        }
+      .then(() => {
+        // 相手の解答時間を取得
+        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}&mode=getTime`)
+          .then(r => r.json())
+          .then(data => {
+            if (data && typeof data.time !== "undefined") {
+              const opponentTime = Number(data.time);
+              if (elapsedSec < opponentTime) {
+                document.getElementById("resultMessage").textContent = "🏆 勝利！";
+              } else if (elapsedSec > opponentTime) {
+                document.getElementById("resultMessage").textContent = "💀 敗北…";
+              } else {
+                document.getElementById("resultMessage").textContent = "🤝 引き分け";
+              }
+              deleteData(myName);
+              deleteData(opponentName);
+            } else {
+              document.getElementById("resultMessage").textContent = "✅ 正解！（相手の結果待ち）";
+            }
+          });
       });
 
-    deleteData(myName);
-    deleteData(opponentName);
   } else {
     document.getElementById("resultMessage").textContent = "❌ 不正解";
   }
