@@ -91,7 +91,7 @@
   </div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyH4vzYlk8dwtq3Tf30IFvRGkDblahiAp-E19J65uWdWBrWKTmhSUblvVck_I8uG8fM/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwO4HffVsYs4U8ODKuN_u3IwE3LH6bd0StUkFqswsOQsmIsG0ZaHwdLz5NApfHnI3Ui/exec";
     let correctAnswer = "";
 
     document.getElementById("step1").style.display = "block";
@@ -217,7 +217,7 @@
     }
 
     // ===== 解答チェック =====
-    /*function checkAnswer() {
+    function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       const myName = document.getElementById("nameInput").value.trim();
       const opponentName = document.getElementById("authorInput").value.trim();
@@ -232,59 +232,8 @@
       } else {
         document.getElementById("resultMessage").textContent = "❌ 不正解";
       }
-    }*/
-    // ===== 解答チェック =====
-function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim();
-  const myName = document.getElementById("nameInput").value.trim();
-  const opponentName = document.getElementById("authorInput").value.trim();
-
-  if (!correctAnswer) {
-    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-    return;
-  }
-
-  if (userAnswer === correctAnswer) {
-    stopTimer();
-
-    // 自分の経過時間（秒）
-    const myTime = document.getElementById("timer").textContent;
-    const [min, sec] = myTime.split(":").map(Number);
-    const elapsedSec = min * 60 + sec;
-
-    // サーバーに自分の解答時間を送信
-    const formData = new FormData();
-    formData.append("name", myName);
-    formData.append("mode", "sendTime");
-    formData.append("time", elapsedSec);
-    fetch(GAS_URL, { method: "POST", body: formData })
-      .then(() => {
-        // 相手の解答時間を取得
-        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}&mode=getTime`)
-          .then(r => r.json())
-          .then(data => {
-            if (data && typeof data.time !== "undefined") {
-              const opponentTime = Number(data.time);
-              if (elapsedSec < opponentTime) {
-                document.getElementById("resultMessage").textContent = "🏆 勝利！";
-              } else if (elapsedSec > opponentTime) {
-                document.getElementById("resultMessage").textContent = "💀 敗北…";
-              } else {
-                document.getElementById("resultMessage").textContent = "🤝 引き分け";
-              }
-              deleteData(myName);
-              deleteData(opponentName);
-            } else {
-              document.getElementById("resultMessage").textContent = "✅ 正解！（相手の結果待ち）";
-            }
-          });
-      });
-
-  } else {
-    document.getElementById("resultMessage").textContent = "❌ 不正解";
-  }
-}
-
+    }
+    
     // ===== 表示切替 =====
     function showStep(stepId) {
       ["step1", "step2", "step3"].forEach(id => {
