@@ -99,7 +99,7 @@
 <!--追加↑-->
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxXX4p0SOYljxXN8CrE8AJ11fMGLe-JPQ7ih9s2YBnLeN-fuqR3Y27UTM0i3LTwdbU/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwKd7o1Z9fqJG9SQRArGDmra1QCkF7_8Xzz1rXbDKC7IVAMxbmyKDh6k81mmVD4ykur/exec";
     let correctAnswer = "";
 
     document.getElementById("step1").style.display = "block";
@@ -124,7 +124,7 @@
         .then(t => console.log("ready sent:", t));
     }
 
-    function waitForStart(opponentName) {
+    /*function waitForStart(opponentName) {
       function poll() {
         fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
           .then(r => r.json())
@@ -159,7 +159,41 @@
       showStep("step3");
       document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
       poll();
-    }
+    }*/
+    function waitForStart(opponentName) {
+  function poll() {
+    fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "ready") {
+          const delay = data.startTime - Date.now();
+          if (delay > 0) {
+            setTimeout(() => {
+              startTimer();
+              document.getElementById("questionBox").innerHTML = data.question;
+              correctAnswer = data.answer.trim();
+              MathJax.startup.promise.then(() => MathJax.typesetPromise());
+            }, delay);
+          } else {
+            startTimer();
+            document.getElementById("questionBox").innerHTML = data.question;
+            correctAnswer = data.answer.trim();
+            MathJax.startup.promise.then(() => MathJax.typesetPromise());
+          }
+        } else {
+          document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
+          setTimeout(poll, 1000);
+        }
+      })
+      .catch(() => {
+        setTimeout(poll, 1000);
+      });
+  }
+  showStep("step3");
+  document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
+  poll();
+}
+//↑変更
 
     // ===== フォーム送信 =====
     document.getElementById("myForm").addEventListener("submit", function(event) {
