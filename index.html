@@ -90,7 +90,6 @@
     </div>
   </div>
 
-  <!--追加↓-->
   <div id="step4" class="step">
   <div class="container">
     <h2>勝敗結果</h2>
@@ -98,7 +97,6 @@
     <button onclick="restart()">再挑戦</button>
   </div>
 </div>
-<!--追加↑-->
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxHEd4efcPoY1I8iwBefYSiwhfjxJi9phTfvsMz243Ud8U48cZz-bBi9ZXTrSsULFXw/exec";
@@ -115,7 +113,6 @@
       showStep("step2");
     }
 
-    // ===== markReady & waitForStart =====
     function markReady(myName) {
       const formData = new FormData();
       formData.append("name", myName);
@@ -125,44 +122,7 @@
         .then(r => r.text())
         .then(t => console.log("ready sent:", t));
     }
-/*
-    function waitForStart(opponentName) {
-      function poll() {
-        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
-          .then(r => r.json())
-          .then(data => {
-            if (data.status === "ready") {
-              const delay = data.startTime - Date.now();
-              if (delay > 0) {
-                //document.getElementById("resultMessage").textContent = `開始まで ${Math.ceil(delay/1000)} 秒`;
-                setTimeout(() => {
-                  startTimer();
-                  document.getElementById("questionBox").innerHTML = data.question;
-                  correctAnswer = data.answer.trim();
-                  //MathJax.typeset();
-                  MathJax.startup.promise.then(() => {
-                    MathJax.typesetPromise();
-                  });
-                }, delay);
-              } else {
-                startTimer();
-                document.getElementById("questionBox").innerHTML = data.question;
-                correctAnswer = data.answer.trim();
-                //MathJax.typeset();
-                MathJax.startup.promise.then(() => {
-                    MathJax.typesetPromise();
-                  });
-              }
-            } else {
-              setTimeout(poll, 1000);
-            }
-          });
-      }
-      showStep("step3");
-      document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
-      poll();
-    }
-*/
+    
     function waitForStart(opponentName) {
   function poll() {
     fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
@@ -207,36 +167,33 @@ function startTimer(startTimestamp) {
       String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
   }, 1000);
 }
-//↑変更
-    // ===== フォーム送信 =====
+
     document.getElementById("myForm").addEventListener("submit", function(event) {
       event.preventDefault();
       const name = document.getElementById("nameInput").value.trim();
       const messageRaw = this.message.value.trim();
       const answer = this.answer.value.trim();
-      //const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
       const message = `\\[${messageRaw}\\]`;
 
       const formData = new FormData();
       formData.append("name", name);
       formData.append("message", message);
       formData.append("answer", answer);
-      formData.append("mode", "sendQuestion"); // 追加
+      formData.append("mode", "sendQuestion");
 
       fetch(GAS_URL, { method: "POST", body: formData })
         .then(response => response.text())
         .then(result => {
           alert("問題の送信が完了しました！");
-          markReady(name);  // 自分をreadyに
+          markReady(name);
           const author = document.getElementById("authorInput").value.trim();
-          waitForStart(author); // 相手を待つ
+          waitForStart(author);
         })
         .catch(error => {
           alert("送信中にエラーが発生しました: " + error);
         });
     });
 
-    // ===== タイマー =====
     let timerInterval;
     function startTimer() {
       const startTime = Date.now();
@@ -253,7 +210,6 @@ function startTimer(startTimestamp) {
       clearInterval(timerInterval);
     }
     
-    // ===== データ削除 =====
     function deleteData(name) {
       const formData = new FormData();
       formData.append("name", name);
@@ -271,104 +227,6 @@ function startTimer(startTimestamp) {
         });
     }
 
-    // ===== 解答チェック =====
-    /*function checkAnswer() {
-      const userAnswer = document.getElementById("answerInput").value.trim();
-      const myName = document.getElementById("nameInput").value.trim();
-      const opponentName = document.getElementById("authorInput").value.trim();
-
-      if (!correctAnswer) {
-        document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-      } else if (userAnswer === correctAnswer) {
-        document.getElementById("resultMessage").textContent = "✅ 正解！";
-        stopTimer();
-        deleteData(myName);
-        deleteData(opponentName);
-      } else {
-        document.getElementById("resultMessage").textContent = "❌ 不正解";
-      }
-    }*/
-    /*function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim();
-  const myName = document.getElementById("nameInput").value.trim();
-  const opponentName = document.getElementById("authorInput").value.trim();
-
-  if (!correctAnswer) {
-    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-    return;
-  }
-  
-  if (userAnswer === correctAnswer) {
-    stopTimer();
-    
-    // 経過時間をミリ秒で取得
-    const timerText = document.getElementById("timer").textContent; // MM:SS
-    const parts = timerText.split(":");
-    const elapsedMs = (parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10)) * 1000;
-
-    // 自分のタイムを送信
-    const formData = new FormData();
-    formData.append("name", myName);
-    formData.append("time", elapsedMs);
-    formData.append("mode", "sendTime");
-
-    fetch(GAS_URL, { method: "POST", body: formData })
-      .then(r => r.text())
-      .then(() => {
-        // 相手のタイムを取得して勝敗判定
-        /*fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
-          .then(r => r.json())
-          .then(data => {
-            if (data.time != null) {
-              // 自分と相手のタイムを比較
-              if (elapsedMs < data.time) {
-                showBattleResult("勝利 🎉");
-              } else if (elapsedMs > data.time) {
-                showBattleResult("敗北 😞");
-              } else {
-                showBattleResult("引き分け");
-              }
-            } else {
-              showBattleResult("相手のタイムがまだ記録されていません。少々お待ちください。");
-            }
-          });/
-        fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
-  .then(r => r.json())
-  .then(data => {
-    alert("自分のタイム(ms):" + String(elapsedMs));
-    alert("相手のタイム(data.time):" + String(data.time));
-
-    const opponentTime = Number(data.time);
-    if (isNaN(opponentTime) || opponentTime <= 0) {
-      showBattleResult("相手のタイムがまだ記録されていません。");
-      return;
-    }
-
-    if (elapsedMs <= 0) {
-      showBattleResult("自分のタイムが正しく取得できていません。");
-      return;
-    }
-
-    if (elapsedMs < opponentTime) {
-      showBattleResult("勝利 🎉");
-    } else if (elapsedMs > opponentTime) {
-      showBattleResult("敗北 😞");
-    } else {
-      showBattleResult("引き分け");
-    }
-  })
-  .catch(err => {
-    console.error("タイム取得失敗:", err);
-    showBattleResult("相手のタイムの取得に失敗しました。");
-  });
-//↑書き換え
-      });
-
-  } else {
-    document.getElementById("resultMessage").textContent = "❌ 不正解";
-  }
-}
-*/
 function checkAnswer() {
   const userAnswer = document.getElementById("answerInput").value.trim();
   const myName = document.getElementById("nameInput").value.trim();
@@ -394,7 +252,6 @@ function checkAnswer() {
     fetch(GAS_URL, { method: "POST", body: formData })
       .then(r => r.text())
       .then(() => {
-        // 相手のタイムを待つ関数を呼ぶ
         waitForOpponentTime(opponentName, elapsedMs);
       });
 
@@ -402,8 +259,6 @@ function checkAnswer() {
     document.getElementById("resultMessage").textContent = "❌ 不正解";
   }
 }
-
-// 相手のタイムが記録されるまで待つ（ポーリング）
 //function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
 function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs = 100) {
   const startTime = Date.now();
@@ -415,7 +270,6 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
         const opponentTime = Number(data.time);
 
         if (!isNaN(opponentTime) && opponentTime > 0) {
-          // タイムが取得できたので勝敗判定
           if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
@@ -425,10 +279,8 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
           }
         } else {
           if (Date.now() - startTime < maxWaitMs) {
-            // maxWait内なら1秒後に再試行
             setTimeout(poll, intervalMs);
           } else {
-            // タイムが来なかった場合の表示
             showBattleResult("相手のタイムが記録されませんでした。");
           }
         }
@@ -443,7 +295,6 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
   }
   poll();
 }
-//追加↑
     
 function showBattleResult(message) {
   showStep("step4");
@@ -453,21 +304,19 @@ function showBattleResult(message) {
 function restart() {
   location.reload();
 }
-//↑変更
-    
-    // ===== 表示切替 =====
+
     function showStep(stepId) {
       ["step1", "step2", "step3", "step4"].forEach(id => {　//"step4"を追加
         document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
       });
     }
 
-    // ===== フォント調整 =====
     function adjustRootFontSize() {
       const shortSide = Math.min(window.innerWidth, window.innerHeight);
       const fontSize = shortSide * 0.04;
       document.documentElement.style.fontSize = fontSize + "px";
     }
+    
     window.addEventListener("load", adjustRootFontSize);
     window.addEventListener("resize", adjustRootFontSize);
   </script>
