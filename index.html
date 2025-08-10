@@ -89,14 +89,6 @@
       <div id="resultMessage" style="font-weight:bold;"></div>
     </div>
   </div>
-<!--追加↓-->
-  <div id="step4" class="step">
-  <div class="container">
-    <h2>対戦結果</h2>
-    <div id="battleResult" style="font-weight:bold; font-size:1.5rem;"></div>
-  </div>
-</div>
-<!--追加↑-->
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwKd7o1Z9fqJG9SQRArGDmra1QCkF7_8Xzz1rXbDKC7IVAMxbmyKDh6k81mmVD4ykur/exec";
@@ -124,7 +116,7 @@
         .then(t => console.log("ready sent:", t));
     }
 
-    /*function waitForStart(opponentName) {
+    function waitForStart(opponentName) {
       function poll() {
         fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
           .then(r => r.json())
@@ -159,41 +151,7 @@
       showStep("step3");
       document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
       poll();
-    }*/
-    function waitForStart(opponentName) {
-  function poll() {
-    fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "ready") {
-          const delay = data.startTime - Date.now();
-          if (delay > 0) {
-            setTimeout(() => {
-              startTimer();
-              document.getElementById("questionBox").innerHTML = data.question;
-              correctAnswer = data.answer.trim();
-              MathJax.startup.promise.then(() => MathJax.typesetPromise());
-            }, delay);
-          } else {
-            startTimer();
-            document.getElementById("questionBox").innerHTML = data.question;
-            correctAnswer = data.answer.trim();
-            MathJax.startup.promise.then(() => MathJax.typesetPromise());
-          }
-        } else {
-          document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
-          setTimeout(poll, 1000);
-        }
-      })
-      .catch(() => {
-        setTimeout(poll, 1000);
-      });
-  }
-  showStep("step3");
-  document.getElementById("resultMessage").textContent = "相手の準備を待っています...";
-  poll();
-}
-//↑変更
+    }
 
     // ===== フォーム送信 =====
     document.getElementById("myForm").addEventListener("submit", function(event) {
@@ -224,7 +182,7 @@
     });
 
     // ===== タイマー =====
-    /*let timerInterval;
+    let timerInterval;
     function startTimer() {
       const startTime = Date.now();
       clearInterval(timerInterval);
@@ -235,34 +193,11 @@
         document.getElementById("timer").textContent =
           String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
       }, 1000);
-    }*/
-    let startTimeGlobal;
-function startTimer() {
-  startTimeGlobal = Date.now();
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    const elapsed = Date.now() - startTimeGlobal;
-    const seconds = Math.floor(elapsed / 1000) % 60;
-    const minutes = Math.floor(elapsed / 60000);
-    document.getElementById("timer").textContent =
-      String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
-  }, 1000);
-}
-//変更↑
+    }
     function stopTimer() {
       clearInterval(timerInterval);
     }
-    //追加↓
-    function sendMyTimerRecord(myName, timerSeconds) {
-  const formData = new FormData();
-  formData.append("name", myName);
-  formData.append("timer", timerSeconds);
-  formData.append("mode", "sendTimer");
-
-  return fetch(GAS_URL, { method: "POST", body: formData })
-    .then(r => r.text());
-}
-    //追加↑
+    
     // ===== データ削除 =====
     function deleteData(name) {
       const formData = new FormData();
@@ -282,7 +217,7 @@ function startTimer() {
     }
 
     // ===== 解答チェック =====
-    /*function checkAnswer() {
+    function checkAnswer() {
       const userAnswer = document.getElementById("answerInput").value.trim();
       const myName = document.getElementById("nameInput").value.trim();
       const opponentName = document.getElementById("authorInput").value.trim();
@@ -297,60 +232,8 @@ function startTimer() {
       } else {
         document.getElementById("resultMessage").textContent = "❌ 不正解";
       }
-    }*/
-    function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim();
-  const myName = document.getElementById("nameInput").value.trim();
-  const opponentName = document.getElementById("authorInput").value.trim();
-
-  if (!correctAnswer) {
-    document.getElementById("resultMessage").textContent = "まず問題を取得してください。";
-    return;
-  }
-
-  if (userAnswer === correctAnswer) {
-    document.getElementById("resultMessage").textContent = "✅ 正解！";
-    stopTimer();
-
-    // 計測時間を秒で計算
-    const elapsedMs = Date.now() - startTimeGlobal;
-    const elapsedSec = Math.floor(elapsedMs / 1000);
-
-    // 自分の記録を送信
-    sendMyTimerRecord(myName, elapsedSec)
-      .then(() => {
-        // 相手の記録を取得して比較
-        return fetch(`${GAS_URL}?name=${encodeURIComponent(opponentName)}`)
-          .then(res => res.json());
-      })
-      .then(data => {
-        const opponentTimer = Number(data.timer);
-        if (isNaN(opponentTimer)) {
-          document.getElementById("battleResult").textContent = "相手の記録がまだありません。";
-        } else {
-          // 勝敗判定
-          if (elapsedSec < opponentTimer) {
-            document.getElementById("battleResult").textContent = "勝利！🎉";
-          } else if (elapsedSec > opponentTimer) {
-            document.getElementById("battleResult").textContent = "敗北…";
-          } else {
-            document.getElementById("battleResult").textContent = "引き分け";
-          }
-          showStep("step4");
-        }
-
-        // データ削除は必要ならここで
-        deleteData(myName);
-        deleteData(opponentName);
-      })
-      .catch(err => {
-        alert("通信エラー: " + err);
-      });
-  } else {
-    document.getElementById("resultMessage").textContent = "❌ 不正解";
-  }
-}
-//変更↑
+    }
+    
     // ===== 表示切替 =====
     function showStep(stepId) {
       ["step1", "step2", "step3", "step4"].forEach(id => { //"step4"←追加
