@@ -260,7 +260,7 @@ function checkAnswer() {
   }
 }
 //function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
-function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs = 100) {
+function waitForOpponentTime(opponentName, myTime, maxWaitMs = 1000, intervalMs = 100) {
   const startTime = Date.now();
 
   function poll() {
@@ -272,19 +272,16 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
         if (!isNaN(opponentTime) && opponentTime > 0) {
           if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
-            deleteData(myName);//追加
           } else if (myTime > opponentTime) {
             showBattleResult("敗北 😞");
-            deleteData(myName);//追加
           } else {
             showBattleResult("引き分け");
-            deleteData(myName);//追加
           }
         } else {
           if (Date.now() - startTime < maxWaitMs) {
             setTimeout(poll, intervalMs);
           } else {
-            showBattleResult("相手のタイムが記録されませんでした。");
+            showBattleResult("勝利 🎉");
           }
         }
       })
@@ -299,10 +296,21 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 15000, intervalMs
   poll();
 }
     
-function showBattleResult(message) {
+/*function showBattleResult(message) {
   showStep("step4");
   document.getElementById("resultBattleMessage").textContent = message;
+}*/
+    function showBattleResult(message) {
+  showStep("step4");
+  document.getElementById("resultBattleMessage").textContent = message;
+
+  // step2で入力した自分のユーザー名を取得
+  const myName = document.getElementById("nameInput").value.trim();
+
+  // 勝敗表示のあとに自分のデータを削除
+  deleteData(myName);
 }
+//↑変更
 
 function restart() {
   location.reload();
