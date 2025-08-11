@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-0second</title>
+  <title>E2-0s</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -270,6 +270,11 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
         const opponentTime = Number(data.time);
 
         if (!isNaN(opponentTime)) {// && opponentTime > 0) {
+          //追加↓
+          if (myTime === 0) {
+            showBattleResult("勝利 🎉");
+          } else
+          //追加↑
           if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
