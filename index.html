@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-0s</title>
+  <title>E2-0s2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -173,7 +173,7 @@ function startTimer(startTimestamp) {
       const name = document.getElementById("nameInput").value.trim();
       const messageRaw = this.message.value.trim();
       const answer = this.answer.value.trim();
-      const message = `\\[\\begin{array}${messageRaw}\\end{array}\\]`;
+      const message = `\\[\\begin{array}{l}${messageRaw}\\end{array}\\]`;
 
       const formData = new FormData();
       formData.append("name", name);
