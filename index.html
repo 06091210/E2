@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2</title>
+  <title>E2-final</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -260,7 +260,7 @@ function checkAnswer() {
   }
 }
 //function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
-function waitForOpponentTime(opponentName, myTime, maxWaitMs = 1000, intervalMs = 100) {
+function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs = 100) {
   const startTime = Date.now();
 
   function poll() {
@@ -308,7 +308,13 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 1000, intervalMs 
   const myName = document.getElementById("nameInput").value.trim();
 
   // 勝敗表示のあとに自分のデータを削除
+      if (message === "勝利 🎉") {
+      } else if (message === "敗北 😞") {
   deleteData(myName);
+        deleteData(document.getElementById("authorInput").value.trim());
+      } else if (message === "引き分け") {
+          deleteData(myName);
+      }
 }
 //↑変更
 
