@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-0s</title>
+  <title>E2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -148,7 +148,7 @@
             });
           }
         } else {
-          setTimeout(poll, 100);//1000to100
+          setTimeout(poll, 100);
         }
       });
   }
@@ -259,7 +259,7 @@ function checkAnswer() {
     document.getElementById("resultMessage").textContent = "❌ 不正解";
   }
 }
-//function waitForOpponentTime(opponentName, myTime, maxWaitMs = 30000, intervalMs = 1000) {
+    
 function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs = 100) {
   const startTime = Date.now();
 
@@ -269,13 +269,10 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
       .then(data => {
         const opponentTime = Number(data.time);
 
-        if (!isNaN(opponentTime)) {// && opponentTime > 0) {
-          //追加↓
+        if (!isNaN(opponentTime)) {
           if (myTime === 0) {
             showBattleResult("勝利 🎉");
-          } else
-          //追加↑
-          if (myTime < opponentTime) {
+          } else if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
             showBattleResult("敗北 😞");
@@ -300,19 +297,11 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
   }
   poll();
 }
-    
-/*function showBattleResult(message) {
-  showStep("step4");
-  document.getElementById("resultBattleMessage").textContent = message;
-}*/
+
     function showBattleResult(message) {
   showStep("step4");
   document.getElementById("resultBattleMessage").textContent = message;
-
-  // step2で入力した自分のユーザー名を取得
   const myName = document.getElementById("nameInput").value.trim();
-
-  // 勝敗表示のあとに自分のデータを削除
       if (message === "勝利 🎉") {
       } else if (message === "敗北 😞") {
         deleteData(myName);
@@ -321,8 +310,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
           deleteData(myName);
       }
 }
-//↑変更
-
+    
 function restart() {
   location.reload();
 }
