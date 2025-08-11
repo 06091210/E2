@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-0s2</title>
+  <title>E2-0second</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -148,7 +148,7 @@
             });
           }
         } else {
-          setTimeout(poll, 300);//1000to300
+          setTimeout(poll, 100);//1000to100
         }
       });
   }
@@ -269,7 +269,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
       .then(data => {
         const opponentTime = Number(data.time);
 
-        if (!isNaN(opponentTime) && opponentTime >= 0) {//>to>=
+        if (!isNaN(opponentTime)) {// && opponentTime > 0) {
           if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
@@ -310,7 +310,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
   // 勝敗表示のあとに自分のデータを削除
       if (message === "勝利 🎉") {
       } else if (message === "敗北 😞") {
-  deleteData(myName);
+        deleteData(myName);
         deleteData(document.getElementById("authorInput").value.trim());
       } else if (message === "引き分け") {
           deleteData(myName);
