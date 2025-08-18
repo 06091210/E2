@@ -1,0 +1,190 @@
+<!--
+  テキストエリアの書き方（例）
+f'(x)
+ = \frac{ df }{ dx }
+ = \displaystyle \lim_{ \Delta x \to 0 } \frac{ f(x + \Delta x) - f(x) }{ \Delta x }
+\\これは，一般的な微分の定義とその記法を表しています．
+\\\boldsymbol{ 1 }
+=( \underbrace{ 1, 1, \ldots, 1 }_{ n } )^{ \mathrm{ T } }
+=\left(
+   \begin{array}{c}
+     1 \\
+     1 \\
+     \vdots \\
+     1
+   \end{array}
+ \right)
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>E2</title>
+  <link rel="apple-touch-icon" href="Icon.jpeg">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async 
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        inlineMath: [["\\(", "\\)"]]
+      },
+      chtml: {
+        displayAlign: 'left'
+      }
+    };
+  </script>
+  <style>
+  .bottom-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    max-height: 50vh;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    transition: 0.3s;
+    border-top: 1px solid #ccc;
+    z-index: 1;
+  }
+  .bottom-bar-content {
+    padding: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .symbol-button {
+    background: none;
+    border: none;
+    padding: 0.4em 0.6em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 0.5em;
+    transition: background 0.2s;
+  }
+  .symbol-button:hover {
+    background: #e0e0e0;
+  }
+  .symbol-button span {
+    display: block;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .openbtn {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+    z-index: 2;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000000;
+  }
+  textarea {
+    margin-bottom: 100px;
+  }
+@media (orientation: portrait) {
+  body {
+    font-size: 1rem;
+  }
+  .symbol-button {
+    font-size: 1.1rem;
+  }
+  textarea {
+    font-size: 1rem;
+  }
+  .openbtn {
+    font-size: 6vw;
+  }
+}
+@media (orientation: landscape) {
+  body {
+    font-size: 1.2rem;
+  }
+  .symbol-button {
+    font-size: 1.3rem;
+  }
+  textarea {
+    font-size: 1.2rem;
+  }
+  .openbtn {
+    font-size: 4vw;
+  }
+}
+</style>
+</head>
+<body>
+  <textarea id="latexInput" style="width: 100%; height: 10em;"></textarea>
+  <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
+  <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
+  <div id="bottomBar" class="bottom-bar">
+    <div class="bottom-bar-content">
+    </div>
+  </div>
+  <script>
+  const input = document.getElementById("latexInput");
+  const output = document.getElementById("output");
+  input.addEventListener("input", () => {
+    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
+    MathJax.typesetPromise([output]);
+  });
+  function addText(text) {
+    input.value += text;
+    output.innerHTML = "\\[\\begin{array}{l}"+input.value+"\\end{array}\\]";
+    MathJax.typesetPromise([output]);
+  }
+  function toggleBottomBar() {
+    const bar = document.getElementById("bottomBar");
+    if (bar.style.height === "0px" || bar.style.height === "") {
+      bar.style.height = "160px";
+      MathJax.typesetPromise([bar]);
+    } else {
+      bar.style.height = "0px";
+    }
+  }
+  const commandList = [
+    { code: String.raw`\frac{1}{2}`, preview: String.raw`\frac{1}{2}` },
+    { code: String.raw`\dfrac{1}{2}` , preview: String.raw`\dfrac{1}{2}` },
+    { code: String.raw`\require{physics} \flatfrac{1}{2}` , preview: String.raw`\require{physics} \flatfrac{1}{2}` },
+    { code: String.raw`\left( -\frac{1}{2} \right)^2` , preview: String.raw`\left( -\frac{1}{2} \right)^2` },
+    { code: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` , preview: String.raw`\cfrac{a+b}{c+\cfrac{d}{e}}` },
+    { code: String.raw`\ddots` , preview: String.raw`\ddots` },
+    { code: String.raw`0.\dot{0}\dot{9}` , preview: String.raw`0.\dot{0}\dot{9}` },
+    { code: String.raw`\pi` , preview: String.raw`\pi` },
+    { code: String.raw`\ldots` , preview: String.raw`\ldots` },
+    { code: String.raw`\sqrt{2}` , preview: String.raw`\sqrt{2}` },
+    { code: String.raw`\cdots` , preview: String.raw`\cdots` },
+    { code: String.raw`\infty` , preview: String.raw`\infty` },
+  ];
+  function buildButtons() {
+    const container = document.querySelector(".bottom-bar-content");
+    if (!container) {
+      console.error("⚠ .bottom-bar-content が見つかりません");
+      return;
+    }
+    commandList.forEach(cmd => {
+      const btn = document.createElement("button");
+      btn.className = "symbol-button";
+      btn.type = "button";
+      btn.addEventListener("click", () => addText(cmd.code));
+      const span = document.createElement("span");
+      span.innerHTML = `\\[${cmd.preview}\\]`;
+      btn.appendChild(span);
+      container.appendChild(btn);
+    });
+    MathJax.typesetPromise([container]);
+  }
+  document.addEventListener("DOMContentLoaded", buildButtons);
+</script>
+</body>
+</html>
