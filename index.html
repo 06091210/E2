@@ -256,6 +256,7 @@
     });
     MathJax.typesetPromise([container]);
   }
+    document.addEventListener("DOMContentLoaded", buildButtons);
     //↑追加
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyZ9gwaGSh93-6WOoRa60yN1Bjk_pbmhPwe1pEOJ1STOsS6uLUe6eVDJMweZsAt4Lv4/exec";
     let correctAnswer = "";
@@ -269,7 +270,6 @@
         return;
       }
       showStep("step2");
-      document.addEventListener("DOMContentLoaded", buildButtons);//←追加
     }
 
     function markReady(myName) {
