@@ -73,6 +73,14 @@
       box-sizing: border-box;
     }
     /*↓追加*/
+    #output {
+      width: 15rem;
+      overflow-x: auto;
+      display: block;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      box-sizing: border-box;
+    }
     .bottom-bar {
     position: fixed;
     left: 0;
@@ -170,7 +178,7 @@
       <form id="myForm">
         <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名" required><br>
         <textarea name="message" placeholder="問題" id="latexInput" required></textarea><!-- id="latexInput" ←追加-->
-        <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div><!--←追加-->
+        <div id="output"></div><!--←追加-->
         <input type="text" name="answer" placeholder="問題の解答"><br>
         <button type="submit">送信して次へ</button>
         <!--↓追加-->
