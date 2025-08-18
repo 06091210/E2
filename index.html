@@ -170,10 +170,10 @@
       <form id="myForm">
         <input type="text" id="nameInput" name="name" placeholder="自分のユーザー名" required><br>
         <textarea name="message" placeholder="問題" id="latexInput" required></textarea><!-- id="latexInput" ←追加-->
+        <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div><!--←追加-->
         <input type="text" name="answer" placeholder="問題の解答"><br>
         <button type="submit">送信して次へ</button>
         <!--↓追加-->
-        <div id="output" style="white-space: pre-wrap; overflow-x: auto;"></div>
   <h1 class="openbtn" onclick="toggleBottomBar()">⌄</h1>
   <div id="bottomBar" class="bottom-bar">
     <div class="bottom-bar-content">
