@@ -437,7 +437,7 @@ function checkAnswer() {
   }
 }
     
-function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs = 100) {
+function waitForOpponentTime(opponentName, myTime, maxWaitMs = 2000, intervalMs = 100) {
   const startTime = Date.now();
 
   function poll() {
@@ -446,7 +446,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
       .then(data => {
         const opponentTime = Number(data.time);
 
-        if (!isNaN(opponentTime)) {
+        /*if (!isNaN(opponentTime)) {
           if (myTime === 0) {
             if (opponentTime === 0) {
               showBattleResult("引き分け");
@@ -467,7 +467,19 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
           } else {
             showBattleResult("勝利 🎉");
           }
-        }
+        }*/
+        if (!isNaN(opponentTime)) {
+  if (myTime === opponentTime) {
+    showBattleResult("引き分け");
+  } else if (myTime < opponentTime) {
+    showBattleResult("勝利 🎉");
+  } else {
+    showBattleResult("敗北 😞");
+  }
+} else {
+  // opponentTime が空白の場合
+  showBattleResult("勝利 🎉");
+}
         
       })
       .catch(() => {
