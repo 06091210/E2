@@ -449,9 +449,9 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
         if (!isNaN(opponentTime)) {
           if (myTime === 0) {
             if (opponentTime === 0) {
-              showBattleResult("引き分け0");
+              showBattleResult("引き分け");
             } else {
-              showBattleResult("勝利 🎉0");
+              showBattleResult("勝利 🎉");
             }
           } else if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
@@ -459,12 +459,13 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
             showBattleResult("敗北 😞");
           } else {
             showBattleResult("引き分け");
+            alert(String(opponentTime));
           }
         } else {
           if (Date.now() - startTime < maxWaitMs) {
             setTimeout(poll, intervalMs);
           } else {
-            showBattleResult("勝利 🎉?");
+            showBattleResult("勝利 🎉");
           }
         }
         
