@@ -21,7 +21,13 @@
   </script>
   <!--↑追加-->
   <style>
-    .step { display: none; }
+.step {
+  display: none;
+  max-height: 90vh;   /* ← 画面に収まる高さを制限 */
+  overflow-y: auto;   /* ← 長文ならスクロール */
+  width: 100%;
+}
+    /*.step { display: none; }*/
     body {
       margin: 0;
       font-family: sans-serif;
