@@ -470,21 +470,21 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 2000, intervalMs 
         }*/
         if (!isNaN(opponentTime)) {
   if (myTime === opponentTime) {
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
     showBattleResult("引き分け");
-    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
   } else if (myTime < opponentTime) {
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
     showBattleResult("勝利 🎉");
-    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
   } else {
-    showBattleResult("敗北 😞");
     alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
+    showBattleResult("敗北 😞");
   }
 } else {
   if (Date.now() - startTime < maxWaitMs) {
             setTimeout(poll, intervalMs);
           } else {
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
             showBattleResult("勝利 🎉");
-    　　　　　alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
           }
 }
         
