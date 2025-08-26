@@ -23,9 +23,7 @@
   <style>
 .step {
   display: none;
-  max-height: 90vh;   /* ← 画面に収まる高さを制限 */
   overflow-y: auto;   /* ← 長文ならスクロール */
-  width: 100%;
 }
     /*.step { display: none; }*/
     body {
@@ -444,7 +442,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
 
         if (!isNaN(opponentTime)) {
           if (myTime === 0) {
-            showBattleResult("勝利 🎉");
+            showBattleResult("引き分け");
           } else if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
@@ -459,6 +457,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
             showBattleResult("勝利 🎉");
           }
         }
+        
       })
       .catch(() => {
         if (Date.now() - startTime < maxWaitMs) {
