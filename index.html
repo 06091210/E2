@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-test</title>
+  <title>E2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -21,12 +21,8 @@
   </script>
   <!--↑追加-->
   <style>
-.step {
-  display: none;
-  overflow-y: auto;   /* ← 長文ならスクロール */
-}
-    /*.step { display: none; }*/
-    body {
+    .step { display: none; }
+    /*body {
       margin: 0;
       font-family: sans-serif;
       background-color: white;
@@ -35,7 +31,17 @@
       align-items: center;
       height: 100vh;
       font-size: 1rem;
-    }
+    }*/
+    body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: white;
+  display: block;      /* ← flex をやめる */
+  min-height: 100vh;   /* ← 画面いっぱい */
+  font-size: 1rem;
+  overflow-y: auto;    /* ← 縦スクロール可能に */
+}
+
     .container {
       width: calc(100% - 20px);
       margin: 0 auto;
@@ -442,7 +448,11 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
 
         if (!isNaN(opponentTime)) {
           if (myTime === 0) {
-            showBattleResult("引き分け");
+            if (opponentTime === 0) {
+              showBattleResult("引き分け0");
+            } else {
+              showBattleResult("勝利 🎉0");
+            }
           } else if (myTime < opponentTime) {
             showBattleResult("勝利 🎉");
           } else if (myTime > opponentTime) {
@@ -454,7 +464,7 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 500, intervalMs =
           if (Date.now() - startTime < maxWaitMs) {
             setTimeout(poll, intervalMs);
           } else {
-            showBattleResult("勝利 🎉");
+            showBattleResult("勝利 🎉?");
           }
         }
         
