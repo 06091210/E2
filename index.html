@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2-test</title>
+  <title>E2</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -471,14 +471,21 @@ function waitForOpponentTime(opponentName, myTime, maxWaitMs = 2000, intervalMs 
         if (!isNaN(opponentTime)) {
   if (myTime === opponentTime) {
     showBattleResult("引き分け");
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
   } else if (myTime < opponentTime) {
     showBattleResult("勝利 🎉");
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
   } else {
     showBattleResult("敗北 😞");
+    alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
   }
 } else {
-  // opponentTime が空白の場合
-  showBattleResult("勝利 🎉");
+  if (Date.now() - startTime < maxWaitMs) {
+            setTimeout(poll, intervalMs);
+          } else {
+            showBattleResult("勝利 🎉");
+    　　　　　alert("あなたのタイム："+String(myTime)+" 対戦相手のタイム："+String(opponentTime));
+          }
 }
         
       })
