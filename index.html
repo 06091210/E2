@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>E2</title>
+  <title>E2-test</title>
   <link rel="apple-touch-icon" href="Icon.jpeg">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async 
@@ -32,7 +32,6 @@
       align-items: center;
       height: 100vh;
       font-size: 1rem;
-      overflow-y: auto;/*←追加
     }
     .container {
       width: calc(100% - 20px);
@@ -42,25 +41,23 @@
     }
     */
     body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: white;
-      justify-content: center;
-      align-items: center;
-      display: flex;
-      height: 100vh;
-      font-size: 1rem;
-    }
+  margin: 0;
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 1rem;
+  /* ←flexレイアウトをやめる */
+  display: block;  
+  height: auto;    
+  min-height: 100vh;  /* 画面全体をカバーしつつスクロール可能 */
+}
     .container {
-      width: calc(100% - 20px);
-      margin: 0 auto;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    #step2 .container {
-      overflow-y: auto;
-      display: block;
-    }
+  width: calc(100% - 20px);
+  max-width: 600px;  /* ←大画面で広がりすぎない */
+  margin: 0 auto;    /* 中央寄せ */
+  padding: 0;
+  box-sizing: border-box;
+}
+
     
     input[type="text"], textarea {
       width: 100%;
